@@ -1,0 +1,2912 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>LIBRARY RECOVERY — SMAN 6 Tambun Selatan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   LIBRARY RECOVERY — SMAN 6 TAMBUN SELATAN
+   Theme: retro school computer · Windows-like · brown / cream / white
+   ============================================================ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  /* warm neutrals */
+  --wood-950: #1b1107;
+  --wood-900: #241708;
+  --wood-800: #2e1d0e;
+  --wood-700: #3c2814;
+  --paper: #f6edda;
+  --paper-2: #efe3c8;
+  --cream: #f3e9d2;
+  --beige: #e6d6b2;
+  --beige-2: #d9c49b;
+  --tan: #c9b285;
+  --brown: #6b4a2c;
+  --brown-2: #54371f;
+  --choco: #3a2413;
+  --accent: #9c5a28;
+
+  /* semantic */
+  --ink: #33220f;
+  --muted: #7d6244;
+  --ok: #5a7d43;
+  --warn: #a87b23;
+  --err: #a83c2a;
+
+  --line: #d8c8a6;
+  --line-strong: #b49a6d;
+  --bevel-light: rgba(255, 253, 244, .9);
+  --bevel-dark: rgba(97, 66, 33, .5);
+
+  --mono: 'JetBrains Mono', Consolas, 'Courier New', monospace;
+  --sans: Tahoma, Verdana, 'Segoe UI', sans-serif;
+
+  --win-shadow: 3px 3px 0 rgba(46, 28, 12, .28), 0 18px 44px rgba(28, 16, 4, .5);
+  --raised: inset 1px 1px 0 var(--bevel-light), inset -1px -1px 0 var(--bevel-dark);
+  --sunken: inset 1px 1px 2px rgba(90, 60, 30, .38);
+}
+
+html, body { height: 100%; }
+
+body {
+  font-family: var(--sans);
+  background: var(--wood-950);
+  color: var(--ink);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: rgba(156, 90, 40, .3); }
+
+/* ---------------- scenes ---------------- */
+.scene { position: fixed; inset: 0; overflow: hidden; }
+.hidden { display: none !important; }
+.hidden-scene { display: none !important; }
+
+/* cinematic zoom into the monitor */
+#desk-scene { transform-origin: 50% 44%; transition: transform 1.5s cubic-bezier(.55, .06, .28, .99), filter 1.3s ease; }
+#desk-scene.zooming { transform: scale(5.5); filter: blur(4px) brightness(1.4); }
+#desk-scene.zooming .desk-hint, #desk-scene.zooming .desk-badge { opacity: 0; transition: opacity .5s ease; }
+#computer-scene { animation: sceneIn .55s ease both; }
+@keyframes sceneIn { from { opacity: 0; transform: scale(1.045); } to { opacity: 1; transform: scale(1); } }
+
+/* ============================================================
+   SCENE 1 — DESK (realistic 3D school computer room)
+   ============================================================ */
+
+/* ---------- room ---------- */
+.room-wall {
+  position: absolute; inset: -40px; z-index: 0;
+  background:
+    radial-gradient(900px 520px at 20% 14%, rgba(255, 236, 190, .45), transparent 60%),
+    linear-gradient(180deg, #d2bb90 0%, #c2a878 50%, #a98c62 100%);
+}
+.room-wall::before {
+  content: ''; position: absolute; inset: 0; opacity: .5;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20% 30%, rgba(110, 80, 45, .12), transparent 100%),
+    radial-gradient(1.5px 1.5px at 70% 60%, rgba(110, 80, 45, .1), transparent 100%);
+  background-size: 26px 26px, 34px 34px;
+}
+.room-floor {
+  position: absolute; left: -40px; right: -40px; bottom: -40px; height: 34%; z-index: 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, .08) 0 2px, transparent 2px 92px),
+    linear-gradient(180deg, #93784e 0%, #7c6340 45%, #5f4a2e 100%);
+  box-shadow: 0 -6px 18px rgba(40, 25, 10, .3) inset;
+}
+.baseboard {
+  position: absolute; left: -40px; right: -40px; bottom: 31%; height: 15px; z-index: 1;
+  background: linear-gradient(180deg, #c4ab7e 0%, #9c8054 100%);
+  border-top: 2px solid rgba(255, 240, 200, .45);
+  box-shadow: 0 3px 6px rgba(50, 30, 12, .25);
+}
+.room-vignette {
+  position: absolute; inset: 0; z-index: 9; pointer-events: none;
+  background: radial-gradient(120% 95% at 50% 40%, transparent 42%, rgba(20, 11, 3, .55) 100%);
+}
+
+/* ---------- window ---------- */
+.wall-window {
+  position: absolute; left: 6%; top: 8%; width: 200px; height: 250px; z-index: 1;
+  background: linear-gradient(180deg, #ffeec2 0%, #f7cd7d 48%, #e8a95c 100%);
+  border: 10px solid #7c5c34; border-radius: 4px;
+  box-shadow: 0 12px 30px rgba(80, 50, 20, .35), var(--raised);
+  overflow: hidden;
+}
+.ww-bar { position: absolute; background: #7c5c34; box-shadow: inset 1px 1px 0 rgba(255, 240, 200, .4); }
+.ww-bar.b-h { left: 0; right: 0; top: 46%; height: 8px; }
+.ww-bar.b-v { top: 0; bottom: 0; left: 46%; width: 8px; }
+.ww-shine { position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255, 255, 255, .45), transparent 45%); }
+.ww-trees {
+  position: absolute; bottom: 15%; left: 4%; width: 14px; height: 20px; border-radius: 50%;
+  background: #75843f;
+  box-shadow:
+    16px 3px 0 #6d7c46, 32px -2px 0 #75843f, 50px 4px 0 #67763c,
+    66px 0 0 #75843f, 84px 3px 0 #6d7c46, 102px -3px 0 #67763c,
+    118px 2px 0 #75843f, 136px 4px 0 #6d7c46, 152px -1px 0 #67763c;
+}
+.ww-sill { position: absolute; left: -12px; right: -12px; bottom: -4px; height: 8px; background: linear-gradient(180deg, #8a6a42, #5d4222); border-radius: 3px; }
+.window-glow {
+  position: absolute; left: 4%; top: 6%; width: 380px; height: 460px; z-index: 1; pointer-events: none;
+  background: radial-gradient(60% 55% at 38% 30%, rgba(255, 218, 140, .3), transparent 70%);
+  transform: rotate(8deg);
+}
+
+/* ---------- wall clock ---------- */
+.wall-clock {
+  position: absolute; right: 10%; top: 8%; width: 64px; height: 64px; z-index: 1; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fbf4e2, #e2d2ac 70%, #cdb488);
+  border: 6px solid #6d5233;
+  box-shadow: 0 10px 22px rgba(80, 50, 20, .35), inset 0 2px 6px rgba(255, 255, 255, .6);
+}
+.wc-hand { position: absolute; left: 50%; top: 50%; transform-origin: 50% 100%; background: #4a3218; border-radius: 3px; }
+.wc-hand.hh { width: 4px; height: 13px; margin: -13px 0 0 -2px; animation: tickH 48s linear infinite; }
+.wc-hand.mh { width: 3px; height: 19px; margin: -19px 0 0 -1.5px; animation: tickM 8s linear infinite; }
+.wc-pin { position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: #4a3218; }
+@keyframes tickM { to { transform: rotate(360deg); } }
+@keyframes tickH { to { transform: rotate(360deg); } }
+
+/* ---------- wall posters ---------- */
+.wall-poster {
+  position: absolute; z-index: 1;
+  background: linear-gradient(180deg, #fbf4e2, #efe3c8);
+  border: 1px solid #b49a6d; border-radius: 2px;
+  box-shadow: 0 8px 18px rgba(70, 45, 18, .3);
+  padding: 10px 10px 8px;
+}
+.wall-poster::before {
+  content: ''; position: absolute; top: -7px; left: 50%; width: 36px; height: 13px; margin-left: -18px;
+  background: rgba(255, 250, 235, .75); border: 1px solid rgba(150, 120, 70, .4);
+  transform: rotate(-2deg);
+}
+.wall-poster b { display: block; font-size: 9px; letter-spacing: 1px; color: #54371f; border-bottom: 2px solid #9c5a28; padding-bottom: 4px; margin-bottom: 6px; }
+.wall-poster i { display: block; height: 4px; background: #d9c49b; margin: 6px 0; }
+.wall-poster i:last-of-type { width: 70%; }
+.wall-poster em { display: block; font-style: normal; font-size: 7px; letter-spacing: 2px; color: #9c5a28; margin-top: 6px; text-align: right; }
+.wp-a { left: 30%; top: 10%; width: 150px; transform: rotate(-1.2deg); }
+.wp-b { right: 25%; top: 25%; width: 158px; transform: rotate(1.4deg); }
+.wp-b span { display: block; font-family: var(--mono); font-size: 7.5px; color: #7d6244; margin-top: 3px; }
+
+/* ---------- wall shelf ---------- */
+.wall-shelf { position: absolute; right: 5%; top: 42%; width: 170px; z-index: 1; }
+.ws-books { display: flex; gap: 4px; align-items: flex-end; padding: 0 6px 3px; }
+.ws-books i { width: 10px; height: 36px; background: var(--c); border-radius: 2px 2px 0 0; box-shadow: inset -2px 0 0 rgba(0, 0, 0, .25); }
+.ws-books i:nth-child(2n) { height: 30px; }
+.ws-books i:nth-child(3n) { height: 33px; }
+.ws-board { height: 8px; border-radius: 2px; background: linear-gradient(180deg, #7a5634, #54371f); box-shadow: 0 5px 10px rgba(60, 40, 20, .4); }
+
+/* ---------- desk ---------- */
+.desk-wrap { position: absolute; inset: 0; display: grid; place-items: center; z-index: 2; }
+.desk-lab { position: relative; width: min(940px, 96vw); height: min(620px, 92vh); }
+
+.desk-floor-shadow {
+  position: absolute; left: 4%; right: 4%; bottom: 8%; height: 30px;
+  background: radial-gradient(50% 100% at 50% 0%, rgba(30, 18, 6, .45), transparent 72%);
+}
+.desk-surface {
+  position: absolute; left: 2%; right: 2%; bottom: 18%; height: 26%;
+  background:
+    repeating-linear-gradient(90deg, rgba(90, 60, 30, .07) 0 3px, transparent 3px 9px),
+    repeating-linear-gradient(0deg, rgba(255, 235, 200, .05) 0 2px, transparent 2px 7px),
+    radial-gradient(150px 60px at 28% 40%, rgba(90, 55, 25, .14), transparent 70%),
+    radial-gradient(190px 70px at 74% 66%, rgba(90, 55, 25, .12), transparent 70%),
+    linear-gradient(180deg, #ab7f51 0%, #9c7448 45%, #835c36 100%);
+  border-radius: 8px 8px 2px 2px;
+  box-shadow: 0 2px 0 rgba(255, 235, 200, .3) inset, 0 -8px 18px rgba(0, 0, 0, .25) inset;
+  transform: perspective(900px) rotateX(14deg);
+  transform-origin: 50% 100%;
+}
+.desk-surface::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  background: linear-gradient(105deg, rgba(255, 226, 160, .22) 0%, transparent 38%);
+}
+.desk-edge {
+  position: absolute; left: 1%; right: 1%; bottom: 13.2%; height: 27px;
+  background: linear-gradient(180deg, #6d4a28 0%, #54371f 70%, #46301a 100%);
+  border-radius: 3px 3px 6px 6px;
+  box-shadow: 0 16px 30px rgba(40, 25, 10, .5), inset 0 2px 0 rgba(255, 235, 200, .2);
+}
+.desk-drawer {
+  position: absolute; left: 12%; bottom: 2.5%; width: 150px; height: 10.5%;
+  background: linear-gradient(180deg, #7a5634, #5d3f22); border-radius: 4px;
+  box-shadow: inset 0 2px 0 rgba(255, 235, 200, .18), 0 10px 22px rgba(0, 0, 0, .35);
+}
+.dr-handle {
+  position: absolute; top: 40%; left: 50%; transform: translateX(-50%);
+  width: 46px; height: 7px; border-radius: 4px;
+  background: linear-gradient(180deg, #c9b285, #8a6a42);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .4);
+}
+.desk-leg { position: absolute; bottom: 0; width: 22px; height: 12%; background: linear-gradient(90deg, #5d3f22, #46301a 60%, #3a2413); border-radius: 0 0 4px 4px; }
+.leg-l { left: 6%; } .leg-r { right: 6%; }
+
+/* ---------- props base ---------- */
+.prop { position: absolute; }
+.prop.sh::after {
+  content: ''; position: absolute; left: 6%; right: 6%; bottom: -7px; height: 11px; border-radius: 50%;
+  background: radial-gradient(50% 100% at 50% 50%, rgba(50, 30, 12, .38), transparent 72%);
+}
+
+/* small helper shadow under desk items */
+.desk-floor-shadow {
+  position: absolute; left: 6%; right: 6%; bottom: 15.5%; height: 26px;
+  background: radial-gradient(50% 100% at 50% 0%, rgba(35, 20, 8, .32), transparent 72%);
+}
+
+/* ---------- monitor ---------- */
+.monitor { position: absolute; left: 50%; bottom: 30%; transform: translateX(-50%); width: 400px; z-index: 5; cursor: pointer; transition: transform .45s cubic-bezier(.22, .8, .28, 1), filter .45s; }
+.monitor:hover, .monitor:focus-visible {
+  transform: translateX(-50%) translateY(-6px) scale(1.02);
+  filter: brightness(1.08);
+}
+.monitor .monitor-frame { transition: box-shadow .5s; }
+.monitor:hover .monitor-frame { box-shadow: inset 0 2px 0 rgba(255, 252, 240, .8), inset 0 -3px 0 rgba(120, 90, 50, .35), 0 22px 50px rgba(50, 30, 12, .5), 0 0 70px rgba(255, 214, 130, .35); }
+.monitor:hover .screen-off { opacity: .12; }
+.monitor:hover .scr-cta { text-shadow: 0 0 14px rgba(255, 214, 130, .9); }
+
+.monitor-shadow {
+  position: absolute; left: 50%; bottom: 28.5%; width: 400px; height: 34px; transform: translateX(-50%); z-index: 3;
+  background: radial-gradient(50% 100% at 50% 0%, rgba(50, 30, 10, .42), transparent 72%);
+}
+.m-cable {
+  position: absolute; left: 50%; bottom: 13.5%; width: 90px; height: 34px; margin-left: -45px; z-index: 3;
+  border-bottom: 4px solid #3a2413; border-radius: 0 0 46px 46px;
+  opacity: .85;
+}
+.monitor-stand { position: relative; margin: 0 auto; width: 120px; text-align: center; }
+.stand-neck {
+  width: 64px; height: 38px; margin: 0 auto;
+  background: linear-gradient(90deg, #c3ab7e, #efe3c4 45%, #b89c6c);
+  clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%);
+  border-radius: 2px;
+}
+.stand-foot {
+  width: 172px; height: 14px; margin: -2px auto 0;
+  background: linear-gradient(180deg, #e6d6b2, #c3ab7e);
+  border-radius: 8px / 10px;
+  box-shadow: 0 10px 18px rgba(60, 35, 12, .4), inset 0 2px 0 rgba(255, 252, 240, .7);
+}
+.monitor-frame {
+  position: relative; z-index: 2;
+  background: linear-gradient(180deg, #f0e3c4 0%, #ddc99e 60%, #cdb68a 100%);
+  border-radius: 14px; padding: 18px 18px 34px;
+  border: 1px solid #a98c5f;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 252, 240, .8),
+    inset 0 -3px 0 rgba(120, 90, 50, .35),
+    0 18px 40px rgba(60, 35, 12, .45);
+}
+.monitor-power { position: absolute; bottom: 9px; left: 0; right: 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.p-led { width: 7px; height: 7px; border-radius: 50%; background: #7ca24a; box-shadow: 0 0 8px #7ca24a; animation: ledBlink 3.2s ease-in-out infinite; }
+.p-label { font-family: var(--mono); font-size: 9px; letter-spacing: 2px; color: #8a6f4d; }
+
+.monitor-screen {
+  position: relative; aspect-ratio: 16 / 10; border-radius: 6px; overflow: hidden;
+  background: #120b04;
+  box-shadow: inset 0 0 0 3px #2e1d0e, inset 0 10px 26px rgba(0, 0, 0, .5);
+}
+
+/* ---------- speakers ---------- */
+.speaker {
+  width: 54px; height: 82px; border-radius: 6px; z-index: 4;
+  background: linear-gradient(180deg, #efe3c4, #d3bd92);
+  border: 1px solid #a98c5f;
+  box-shadow: inset 0 2px 0 rgba(255, 252, 240, .8), inset -2px 0 0 rgba(120, 90, 50, .22), 0 10px 18px rgba(60, 35, 12, .35);
+}
+.speaker .grille {
+  position: absolute; left: 8px; right: 8px; top: 9px; height: 52px; border-radius: 4px;
+  background:
+    radial-gradient(rgba(90, 60, 30, .5) 1px, transparent 1.4px) 0 0 / 7px 7px,
+    linear-gradient(180deg, #e2cfa6, #cdb488);
+}
+.speaker .sp-led { position: absolute; bottom: 7px; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: #7ca24a; box-shadow: 0 0 5px #7ca24a; }
+.sp-l { left: 17.5%; bottom: 32%; }
+.sp-r { right: 17.5%; bottom: 32%; }
+
+/* ---------- desk lamp ---------- */
+.lamp { left: 6.5%; bottom: 36%; width: 160px; height: 150px; z-index: 4; }
+.lp-base {
+  position: absolute; bottom: 0; left: 0; width: 64px; height: 12px; border-radius: 6px;
+  background: linear-gradient(180deg, #7a5634, #54371f);
+  box-shadow: 0 6px 12px rgba(50, 30, 12, .4), inset 0 2px 0 rgba(255, 235, 200, .25);
+}
+.lp-arm1 { position: absolute; bottom: 8px; left: 26px; width: 7px; height: 74px; background: linear-gradient(90deg, #8a6a42, #5d4222); border-radius: 4px; transform: rotate(14deg); transform-origin: bottom; }
+.lp-arm2 { position: absolute; bottom: 76px; left: 43px; width: 6px; height: 42px; background: linear-gradient(90deg, #6d5233, #46301a); border-radius: 4px; transform: rotate(62deg); transform-origin: left; }
+.lp-head {
+  position: absolute; top: -8px; left: 72px; width: 58px; height: 26px; border-radius: 30px 30px 8px 8px;
+  background: linear-gradient(180deg, #8a6a42, #54371f); transform: rotate(16deg);
+  box-shadow: inset 0 3px 0 rgba(255, 235, 200, .3);
+}
+.lp-head::after { content: ''; position: absolute; left: 6px; right: 6px; bottom: 3px; height: 8px; border-radius: 50%; background: #ffe9b8; box-shadow: 0 0 12px #ffd98a; }
+.lp-glow {
+  position: absolute; top: 2px; left: 34px; width: 200px; height: 160px; pointer-events: none;
+  background: radial-gradient(50% 55% at 55% 32%, rgba(255, 210, 120, .3), transparent 70%);
+  animation: lampPulse 6s ease-in-out infinite;
+}
+
+/* ---------- mug ---------- */
+.mug { right: 8.5%; bottom: 20%; width: 40px; height: 44px; z-index: 7; }
+.mug-body {
+  position: absolute; inset: 0; border-radius: 4px 4px 10px 10px;
+  background: linear-gradient(90deg, #b39568 0%, #f6ecd4 30%, #efe3c8 55%, #c9ac7c 100%);
+  border: 1px solid #a98c5f;
+  box-shadow: 0 8px 14px rgba(60, 35, 12, .35), inset 0 -6px 8px rgba(120, 90, 50, .18);
+}
+.mug-body::after { content: ''; position: absolute; top: 3px; left: 4px; right: 4px; height: 9px; border-radius: 50%; background: #5b3a24; box-shadow: inset 0 2px 3px rgba(0, 0, 0, .4); }
+.mug-handle { position: absolute; right: -12px; top: 9px; width: 15px; height: 21px; border: 5px solid #d9c49b; border-left: none; border-radius: 0 10px 10px 0; }
+.steam {
+  position: absolute; top: -14px; width: 6px; height: 13px; border-radius: 50%;
+  border: 1px solid rgba(255, 240, 210, .55); border-bottom: none; border-left: none;
+  animation: steam 3s ease-in-out infinite;
+}
+.steam.s1 { left: 14px; }
+.steam.s2 { left: 24px; animation-delay: 1.2s; }
+
+/* ---------- pencil cup ---------- */
+.pencil-cup { left: 22.5%; bottom: 20.5%; width: 48px; height: 64px; z-index: 7; }
+.pc-body {
+  position: absolute; bottom: 0; left: 5px; right: 5px; height: 38px; border-radius: 4px 4px 8px 8px;
+  background: linear-gradient(90deg, #8a5a2c, #c9b285 45%, #a98c5f);
+  box-shadow: inset 0 -6px 8px rgba(60, 40, 18, .25), 0 6px 12px rgba(50, 30, 12, .35);
+}
+.pencil { position: absolute; bottom: 30px; width: 7px; border-radius: 3px 3px 0 0; }
+.pencil::after { content: ''; position: absolute; top: -5px; left: 1px; border-left: 2.5px solid transparent; border-right: 2.5px solid transparent; border-bottom: 5px solid #e8cf9e; }
+.pencil.p1 { left: 8px; height: 52px; background: linear-gradient(90deg, #c9803a, #e3b877); transform: rotate(-6deg); }
+.pencil.p2 { left: 18px; height: 58px; background: linear-gradient(90deg, #5a7d43, #8fae6b); transform: rotate(3deg); }
+.pencil.p3 { left: 28px; height: 48px; background: linear-gradient(90deg, #a83c2a, #d97757); transform: rotate(8deg); }
+.pen { position: absolute; bottom: 30px; left: 37px; height: 52px; width: 5px; border-radius: 3px; background: linear-gradient(90deg, #33261a, #54432e); transform: rotate(12deg); }
+
+/* ---------- sticky notes ---------- */
+.sticky-notes { right: 26%; bottom: 28.5%; width: 72px; height: 62px; z-index: 6; }
+.sn {
+  position: absolute; width: 27px; height: 27px; display: grid; place-items: center;
+  font-family: var(--mono); font-weight: 700; font-size: 10px; color: #6b4a2c;
+  box-shadow: 0 4px 8px rgba(60, 35, 12, .3);
+}
+.sn1 { background: #f2d98c; transform: rotate(-6deg); left: 0; bottom: 8px; }
+.sn2 { background: #e8d0a0; transform: rotate(4deg); left: 27px; bottom: 16px; }
+.sn3 { background: #e0b98a; transform: rotate(-2deg); left: 46px; bottom: 2px; }
+
+/* ---------- papers ---------- */
+.papers { left: 28%; bottom: 19.5%; width: 112px; height: 46px; z-index: 7; }
+.paper {
+  position: absolute; width: 98px; height: 42px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 8px, rgba(156, 90, 40, .18) 8px 9px) 6px 8px / calc(100% - 12px) calc(100% - 12px) no-repeat,
+    linear-gradient(180deg, #fdf8ec, #f1e6cc);
+  border: 1px solid #cbb68d; border-radius: 2px;
+  box-shadow: 0 5px 10px rgba(60, 35, 12, .25);
+}
+.pa1 { transform: rotate(-5deg); left: 0; }
+.pa2 { transform: rotate(3deg); left: 13px; top: 4px; }
+
+/* ---------- book stack ---------- */
+.book-stack { left: 10.5%; bottom: 32%; width: 86px; z-index: 5; }
+.book-stack span {
+  display: block; height: 16px; border-radius: 3px 6px 6px 3px; position: relative;
+  box-shadow: 0 3px 6px rgba(50, 30, 12, .35), inset 0 2px 0 rgba(255, 245, 220, .3);
+}
+.book-stack span::after { content: ''; position: absolute; right: 5px; top: 2px; bottom: 2px; width: 8px; border-radius: 2px; background: #efe3c8; box-shadow: inset 1px 0 0 rgba(120, 90, 50, .4); }
+.book-stack span:nth-child(1) { width: 84px; background: linear-gradient(90deg, #a83c2a, #7c2d1e); transform: rotate(-1.4deg); }
+.book-stack span:nth-child(2) { width: 90px; background: linear-gradient(90deg, #b07d2a, #8a5f1e); transform: rotate(.8deg); margin-top: 2px; }
+.book-stack span:nth-child(3) { width: 78px; background: linear-gradient(90deg, #5a7d43, #46682e); margin-top: 2px; }
+
+/* ---------- headphones ---------- */
+.headphones { right: 31%; bottom: 22.5%; width: 84px; height: 48px; z-index: 6; }
+.hp-band { position: absolute; top: 0; left: 10px; right: 10px; height: 32px; border: 7px solid #6d4a28; border-bottom: none; border-radius: 44px 44px 0 0; box-shadow: inset 0 2px 0 rgba(255, 235, 200, .3); }
+.hp-cup {
+  position: absolute; top: 24px; width: 20px; height: 26px; border-radius: 8px;
+  background: linear-gradient(180deg, #8a6a42, #54371f);
+  box-shadow: inset 0 2px 0 rgba(255, 235, 200, .3), 0 4px 8px rgba(60, 35, 12, .35);
+}
+.hp-cup.c1 { left: 2px; } .hp-cup.c2 { right: 2px; }
+
+/* ---------- plant ---------- */
+.plant { left: 2.5%; bottom: 38%; width: 70px; height: 112px; z-index: 4; }
+.leaf { position: absolute; bottom: 34px; width: 10px; height: 58px; border-radius: 50%; background: linear-gradient(180deg, #6d8a4a, #46682e); transform-origin: bottom; }
+.leaf.l1 { left: 8px; transform: rotate(-26deg); }
+.leaf.l2 { left: 20px; height: 72px; }
+.leaf.l3 { left: 34px; transform: rotate(24deg); }
+.leaf.l4 { left: 46px; height: 48px; transform: rotate(38deg); }
+.plant-pot {
+  position: absolute; bottom: 0; left: 2px; width: 56px; height: 36px;
+  background: linear-gradient(180deg, #a05a28, #6b3a16); border-radius: 5px 5px 10px 10px;
+  box-shadow: inset 0 3px 0 rgba(255, 235, 200, .25), 0 8px 16px rgba(50, 30, 12, .4);
+}
+.plant-pot::before { content: ''; position: absolute; top: -4px; left: -3px; right: -3px; height: 9px; border-radius: 4px; background: linear-gradient(180deg, #b46a34, #8a4c1e); }
+
+/* ---------- keyboard ---------- */
+.keyboard {
+  left: 50%; transform: translateX(-50%) rotate(-1deg); bottom: 19%; width: 320px; padding: 9px 10px 11px;
+  background: linear-gradient(180deg, #f0e3c4, #dcc99f);
+  border: 1px solid #a98c5f; border-radius: 8px; z-index: 7;
+  box-shadow: 0 10px 20px rgba(60, 35, 12, .4), inset 0 2px 0 rgba(255, 252, 240, .8), inset 0 -3px 0 rgba(120, 90, 50, .3);
+}
+.kb-row { display: flex; gap: 4px; margin-bottom: 4px; }
+.kb-row i { flex: 1; height: 15px; border-radius: 3px; background: linear-gradient(180deg, #fbf4e2, #e6d5b2); box-shadow: 0 2px 0 #a98c5f, inset 0 1px 0 #fffef8; }
+.kb-row.space-row i { flex: 6; }
+
+/* ---------- mousepad + mouse ---------- */
+.mousepad {
+  right: 16%; bottom: 18%; width: 108px; height: 76px; border-radius: 10px; z-index: 6;
+  background: linear-gradient(160deg, #7a5634, #54371f);
+  box-shadow: 0 8px 16px rgba(50, 30, 12, .4), inset 0 2px 0 rgba(255, 235, 200, .12);
+}
+.mouse {
+  right: 13.5%; bottom: 20%; width: 30px; height: 44px; z-index: 7;
+  border-radius: 16px 16px 10px 10px;
+  background: radial-gradient(120% 80% at 35% 20%, #fdf8ec, #ddc99e 60%, #c3ab7e);
+  border: 1px solid #a98c5f;
+  box-shadow: 0 8px 14px rgba(50, 30, 12, .45), inset 0 2px 0 rgba(255, 255, 255, .7);
+}
+.mouse::before { content: ''; position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 8px; height: 11px; border-radius: 4px; background: #a98c5f; box-shadow: inset 0 1px 2px rgba(60, 40, 18, .5); }
+
+/* ---------- photo frame (class photo) ---------- */
+.photo-frame {
+  left: 30.5%; bottom: 31.5%; width: 62px; height: 74px; z-index: 6; transform: rotate(-3deg);
+  background: linear-gradient(180deg, #8a6a42, #54371f);
+  border-radius: 3px; padding: 5px 5px 14px;
+  box-shadow: 0 10px 18px rgba(50, 30, 12, .4), inset 0 2px 0 rgba(255, 235, 200, .25);
+}
+.photo-frame::before {
+  content: ''; position: absolute; inset: 5px 5px 14px;
+  background:
+    radial-gradient(9px 7px at 30% 62%, rgba(90, 125, 67, .8), transparent 70%),
+    radial-gradient(9px 7px at 52% 58%, rgba(90, 125, 67, .7), transparent 70%),
+    radial-gradient(9px 7px at 74% 64%, rgba(90, 125, 67, .75), transparent 70%),
+    radial-gradient(7px 6px at 41% 70%, rgba(140, 100, 60, .8), transparent 70%),
+    radial-gradient(7px 6px at 63% 70%, rgba(140, 100, 60, .75), transparent 70%),
+    linear-gradient(180deg, #d9e2ea 0%, #c8d4c2 55%, #b8c8b0 100%);
+}
+.photo-frame b { position: absolute; top: 7px; left: 0; right: 0; text-align: center; font-family: var(--mono); font-size: 9px; letter-spacing: 2px; color: #fff8ec; z-index: 2; }
+.photo-frame span { position: absolute; bottom: 2.5px; left: 0; right: 0; text-align: center; font-size: 5.5px; letter-spacing: 1px; color: #e6d0a4; }
+
+/* ---------- diskettes ---------- */
+.diskettes { right: 30.5%; bottom: 19.8%; width: 92px; height: 52px; z-index: 6; }
+.dk {
+  position: absolute; width: 40px; height: 40px; border-radius: 2px 6px 2px 2px;
+  background: linear-gradient(135deg, #4c4a42 0%, #35332c 60%, #26241f 100%);
+  box-shadow: 0 5px 10px rgba(50, 30, 12, .4), inset 0 1px 0 rgba(255, 250, 230, .25);
+}
+.dk::before { content: ''; position: absolute; top: 3px; left: 5px; right: 5px; height: 11px; background: #d9d2be; border-radius: 1px; }
+.dk::after { content: ''; position: absolute; bottom: 3px; left: 6px; right: 6px; height: 12px; background: linear-gradient(180deg, #efe9d6, #cfc8b0); border-radius: 1px; }
+.dk1 { left: 0; bottom: 0; transform: rotate(-5deg); }
+.dk2 { left: 20px; bottom: 3px; transform: rotate(3deg); }
+.dk3 { left: 40px; bottom: 0; transform: rotate(-2deg); }
+.dk-box {
+  position: absolute; right: 0; bottom: 1px; width: 34px; height: 16px; border-radius: 2px;
+  background: linear-gradient(180deg, #b3502e, #8f3220);
+  box-shadow: 0 4px 8px rgba(50, 30, 12, .4), inset 0 1px 0 rgba(255, 235, 210, .35);
+}
+.dk-box::after { content: 'BACKUP'; position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--mono); font-size: 5px; letter-spacing: 1px; color: #ffe9d2; }
+
+/* ---------- globe ---------- */
+.globe { left: 41.5%; bottom: 31.8%; width: 58px; height: 66px; z-index: 5; }
+.gl-map {
+  position: absolute; top: 0; left: 8px; width: 42px; height: 42px; border-radius: 50%;
+  background:
+    radial-gradient(8px 5px at 35% 40%, #7a9a58 0%, #7a9a58 60%, transparent 70%),
+    radial-gradient(6px 8px at 62% 30%, #6d8a4a 0%, #6d8a4a 60%, transparent 70%),
+    radial-gradient(5px 7px at 55% 68%, #7a9a58 0%, #7a9a58 60%, transparent 70%),
+    radial-gradient(circle at 35% 30%, #e8d9ae 0%, #c9b285 55%, #9c8256 100%);
+  box-shadow: inset -4px -3px 6px rgba(80, 55, 25, .45), 0 6px 12px rgba(50, 30, 12, .35);
+}
+.gl-map::after { content: ''; position: absolute; top: 22%; left: -3px; right: -3px; height: 2px; background: rgba(120, 90, 50, .4); transform: rotate(18deg); }
+.gl-stand { position: absolute; top: 38px; left: 28px; width: 3px; height: 18px; background: linear-gradient(90deg, #8a6a42, #54371f); }
+.gl-foot { position: absolute; bottom: 0; left: 18px; width: 24px; height: 7px; border-radius: 3px; background: linear-gradient(180deg, #8a6a42, #5d3f22); }
+
+/* ---------- wall calendar ---------- */
+.wall-calendar {
+  position: absolute; left: 47%; top: 7%; width: 118px; z-index: 1; transform: rotate(1.5deg);
+  background: linear-gradient(180deg, #fdf8ec, #efe3c8);
+  border: 1px solid #a98c5f; border-radius: 3px;
+  box-shadow: 0 10px 22px rgba(70, 45, 18, .3);
+  padding: 8px 9px 9px;
+}
+.wall-calendar b { display: block; text-align: center; font-family: var(--mono); font-size: 8.5px; letter-spacing: 2px; color: #fdf6e6; background: #a83c2a; border-radius: 2px; padding: 3px 0; margin-bottom: 6px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-grid span { font-family: var(--mono); font-size: 6.5px; text-align: center; color: #9c5a28; font-weight: 700; }
+.cal-grid u { text-decoration: none; font-family: var(--mono); font-size: 7px; text-align: center; color: #54371f; padding: 2px 0; border-radius: 2px; }
+.cal-grid u.today { background: #9c5a28; color: #fdf6e6; font-weight: 700; box-shadow: 0 0 0 1px #7c5228; }
+
+/* ---------- labels ---------- */
+.desk-hint {
+  position: absolute; bottom: 3.5%; left: 50%; transform: translateX(-50%); z-index: 10;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 3px; color: #e6d0a4; white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(20, 11, 3, .8);
+}
+.desk-badge {
+  position: absolute; top: 3%; left: 50%; transform: translateX(-50%); z-index: 10;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 6px; color: #f0dcae;
+  padding: 8px 18px; border: 1px solid rgba(220, 185, 120, .45); border-radius: 999px;
+  background: rgba(60, 40, 20, .55); backdrop-filter: blur(6px);
+}
+@keyframes steam { 0% { transform: translateY(0) rotate(8deg); opacity: 0; } 40% { opacity: .8; } 100% { transform: translateY(-14px) rotate(20deg); opacity: 0; } }
+@keyframes lampPulse { 0%, 100% { opacity: .75; } 50% { opacity: 1; } }
+@keyframes ledBlink { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+.screen-off {
+  position: absolute; inset: 0; z-index: 5; background: linear-gradient(165deg, #1c130a, #0d0803 65%);
+  opacity: .92; transition: opacity .5s; pointer-events: none;
+}
+.screen-content { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+.scr-brand { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.scr-logo { width: 34px; height: 34px; border-radius: 8px; background: linear-gradient(180deg, #f4ead2, #ddc99e); border: 1px solid #8a6a42; box-shadow: var(--raised); position: relative; }
+.scr-logo::after { content: '◈'; position: absolute; inset: 0; display: grid; place-items: center; color: #6b4a2c; font-size: 18px; font-weight: 800; }
+.scr-title { font-family: var(--mono); font-weight: 700; font-size: clamp(11px, 2.1vw, 16px); letter-spacing: 3px; color: #f2e6c8; text-shadow: 0 0 14px rgba(240, 200, 120, .4); }
+.scr-sub { font-family: var(--mono); font-size: clamp(8px, 1.4vw, 11px); letter-spacing: 4px; color: #b39568; }
+.scr-cta { font-family: var(--mono); font-size: clamp(9px, 1.6vw, 13px); letter-spacing: 3px; color: #e3b877; animation: ctaPulse 2s ease-in-out infinite; }
+@keyframes ctaPulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+.scr-corner { position: absolute; width: 22px; height: 22px; border-color: rgba(230, 190, 120, .5); border-style: solid; }
+.c-tl { top: 12px; left: 12px; border-width: 2px 0 0 2px; }
+.c-br { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; }
+
+.scanlines { position: absolute; inset: 0; z-index: 6; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(255, 240, 210, .03) 0 1px, transparent 1px 3px); }
+.glass { position: absolute; inset: 0; z-index: 7; pointer-events: none; border-radius: 8px; box-shadow: 0 0 0 1px rgba(255, 250, 235, .08) inset, 0 20px 40px rgba(0, 0, 0, .45) inset; }
+.screen-glare { position: absolute; inset: 0; z-index: 8; pointer-events: none; background: linear-gradient(115deg, rgba(255, 250, 235, .08) 0%, transparent 28%); }
+.crt-flicker { position: absolute; inset: 0; z-index: 9; pointer-events: none; background: rgba(255, 225, 170, .03); animation: crtFlick 5s steps(60) infinite; }
+@keyframes crtFlick { 0%, 96%, 100% { opacity: .5; } 97% { opacity: .9; } 98% { opacity: .2; } }
+
+
+/* ============================================================
+   SCENE 2 — COMPUTER (cream wallpaper, beige bezel)
+   ============================================================ */
+.computer-room-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(1100px 640px at 50% 8%, #4c3620 0%, rgba(53, 36, 16, .5) 45%, #1b1107 85%);
+  animation: bgShift 14s ease-in-out infinite alternate;
+}
+@keyframes bgShift { from { filter: brightness(1); } to { filter: brightness(1.12); } }
+
+.computer-frame {
+  position: relative; height: 100%; margin: 0 auto;
+  width: min(1100px, 97vw);
+  display: flex; flex-direction: column;
+  padding: clamp(8px, 1.6vh, 16px) clamp(8px, 1.4vw, 18px);
+  gap: 8px;
+}
+.bezel-top, .bezel-bottom {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 2px; color: #6d5233;
+  padding: 6px 12px; border-radius: 8px;
+  background: linear-gradient(180deg, #e6d6b2, #d3bd92);
+  border: 1px solid #a98c5f;
+  box-shadow: var(--raised);
+  flex: 0 0 auto;
+}
+.bezel-status { color: var(--warn); font-weight: 700; }
+.bezel-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--warn); box-shadow: 0 0 6px var(--warn); animation: ledBlink 1.2s infinite; }
+.bezel-status.online, .bezel-status.online ~ .bezel-status-dot,
+.bezel-status.ok { color: var(--ok); }
+.bezel-status.ok ~ .bezel-status-dot, .bezel-status-dot.ok { background: var(--ok); box-shadow: 0 0 8px var(--ok); animation: none; }
+
+.computer-screen {
+  position: relative; flex: 1; min-height: 0;
+  border-radius: 6px; overflow: hidden;
+  /* cream Windows wallpaper with soft warm vignette */
+  background:
+    radial-gradient(130% 100% at 50% 0%, rgba(255, 250, 235, .5), transparent 60%),
+    linear-gradient(180deg, #f4ead2 0%, #e9d8b4 55%, #d9c39a 100%);
+  border: 1px solid #8a6a42;
+  box-shadow: var(--sunken), 0 18px 60px rgba(0, 0, 0, .5);
+}
+
+.screen-layer { position: absolute; inset: 0; z-index: 2; }
+
+.zoom-overlay { position: absolute; inset: 0; z-index: 40; pointer-events: none; opacity: 0; background: radial-gradient(60% 60% at 50% 46%, rgba(250, 220, 160, .18), rgba(30, 18, 6, 0) 70%); transition: opacity .6s; }
+.zoom-overlay.active { opacity: 1; }
+
+/* ---- boot (cream BIOS) ---- */
+#boot-screen { background: var(--paper); }
+.boot-inner { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; font-family: var(--mono); }
+.boot-logo { width: 54px; height: 54px; border-radius: 10px; background: linear-gradient(180deg, #f4ead2, #ddc99e); border: 1px solid #8a6a42; box-shadow: var(--raised); display: grid; place-items: center; animation: bootPulse 1.6s ease-in-out infinite; }
+.boot-logo-glyph::after { content: '◈'; color: #6b4a2c; font-size: 26px; font-weight: 800; }
+@keyframes bootPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+.boot-line { font-size: 15px; letter-spacing: 4px; color: #3a2413; }
+.boot-line.small { font-size: 11px; color: #7d6244; }
+.boot-line.status { color: #9c5a28; min-height: 20px; }
+.boot-bar { width: min(380px, 70%); height: 12px; border-radius: 3px; border: 1px solid #8a6a42; overflow: hidden; background: #efe3c8; box-shadow: var(--sunken); }
+.boot-bar-fill { display: block; height: 100%; width: 0%; background: linear-gradient(180deg, #8a5a2c, #6e4520); background-image: repeating-linear-gradient(90deg, transparent 0 7px, rgba(255, 248, 230, .18) 7px 9px), linear-gradient(180deg, #8a5a2c, #6e4520); transition: width .28s ease; }
+.boot-tiny { font-size: 9px; letter-spacing: 2px; color: #8a6f4d; }
+
+/* ---- desktop ---- */
+.desktop-icons { position: absolute; top: 14px; left: 14px; display: flex; flex-direction: column; gap: 10px; z-index: 3; }
+.d-icon { width: 74px; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 4px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; transition: background .15s, border-color .15s, transform .15s; }
+.d-icon:hover { background: rgba(255, 248, 230, .45); border-color: #b49a6d; transform: translateY(-2px); }
+.d-icon .ic { width: 38px; height: 38px; display: grid; place-items: center; font-size: 19px; border-radius: 6px; background: linear-gradient(180deg, #faf1da, #e2cfa6); border: 1px solid #8a6a42; box-shadow: var(--raised), 2px 2px 0 rgba(60, 40, 18, .18); }
+.d-icon .lb { font-family: var(--sans); font-size: 10px; color: #3a2413; text-align: center; text-shadow: 1px 1px 0 rgba(255, 250, 235, .8); }
+.d-icon.active .ic { box-shadow: var(--raised), 0 0 0 2px #9c5a28; }
+.d-icon.dimmed { opacity: .38; pointer-events: none; }
+
+.desktop-hint { position: absolute; left: 14px; bottom: 62px; font-family: var(--sans); font-size: 11px; color: #54371f; background: rgba(255, 248, 230, .8); border: 1px solid #b49a6d; border-radius: 4px; padding: 6px 10px; animation: ctaPulse 2s infinite; }
+
+.desktop-taskbar {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 46px; z-index: 4;
+  display: flex; align-items: center; gap: 6px; padding: 4px 6px;
+  background: linear-gradient(180deg, #e9d9b6, #d9c49b);
+  border-top: 1px solid #fbf4e2;
+  box-shadow: 0 -1px 0 #9c7c50;
+}
+.taskbar-start { display: flex; align-items: center; gap: 7px; height: 32px; padding: 0 12px; border-radius: 4px; background: linear-gradient(180deg, #f3e7c9, #e2cfa6); border: 1px solid #8a6a42; box-shadow: var(--raised); font-weight: 700; font-size: 11px; color: #4a3218; cursor: pointer; }
+.taskbar-start .ts-logo { width: 17px; height: 17px; display: grid; place-items: center; background: linear-gradient(180deg, #8a5a2c, #6e4520); color: #fdf3dd; border-radius: 3px; font-size: 11px; }
+.tb-item { display: flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 4px; font-family: var(--sans); font-size: 11px; color: #4a3218; background: linear-gradient(180deg, #f3e7c9, #e2cfa6); border: 1px solid #9a7a4e; box-shadow: var(--raised); cursor: pointer; white-space: nowrap; transition: box-shadow .12s, background .12s; }
+.tb-item:hover { background: linear-gradient(180deg, #faf0d8, #e8d6ae); }
+.tb-item.active { background: #ddc89e; box-shadow: var(--sunken); color: #33220f; }
+.tb-item.minimized { opacity: .62; color: #7d6244; background: linear-gradient(180deg, #efe3c8, #e2d2ac); box-shadow: var(--raised); }
+.taskbar-tray { font-family: var(--sans); font-size: 11px; color: #4a3218; padding: 5px 12px; background: linear-gradient(180deg, #f3e7c9, #e2cfa6); border: 1px solid #9a7a4e; box-shadow: var(--sunken); border-radius: 4px; }
+
+/* ---- OS windows (classic beveled chrome) ---- */
+.os-window {
+  position: absolute; z-index: 20; left: 50%; top: 48%;
+  transform: translate(-50%, -50%) scale(.94);
+  width: min(var(--w, 620px), calc(100vw - 28px));
+  max-height: calc(100% - 90px);
+  display: flex; flex-direction: column;
+  background: var(--cream);
+  border: 1px solid #5d4222; border-radius: 6px;
+  box-shadow: 0 0 0 1px #f8f0dc inset, var(--win-shadow);
+  opacity: 0; pointer-events: none;
+  transition: opacity .22s ease, transform .3s cubic-bezier(.2, .9, .3, 1.15);
+}
+.os-window.show { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
+.os-window.minimized { display: none; }
+.os-window.maximized { transform: translate(-50%, -50%) scale(1); }
+.os-window-bar { cursor: default; }
+.os-window.closing { opacity: 0; transform: translate(-50%, -46%) scale(.95); }
+
+.os-window-bar {
+  display: flex; align-items: center; gap: 9px; padding: 7px 8px 7px 10px;
+  background: linear-gradient(180deg, #7c5228, #66421f);
+  border-bottom: 1px solid #4a2f14;
+  border-radius: 5px 5px 0 0;
+  flex: 0 0 auto;
+}
+.os-window-ic { font-size: 12px; color: #f2e2c2; flex: 0 0 auto; }
+.os-window-title { flex: 1; font-family: var(--sans); font-weight: 700; font-size: 12px; color: #fdf6e6; text-shadow: 0 1px 0 rgba(0, 0, 0, .35); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.os-window-ctrls { display: flex; gap: 2px; flex: 0 0 auto; }
+.os-window-btn, .os-window-x {
+  width: 23px; height: 20px; padding: 0;
+  display: grid; place-items: center;
+  font-family: var(--mono); font-size: 10px; line-height: 1;
+  color: #4a3218; background: linear-gradient(180deg, #f6ecd4, #e2cfa6);
+  border: 1px solid #6d4d28; border-radius: 3px;
+  box-shadow: inset 1px 1px 0 #fffef8, inset -1px -1px 0 #b39568;
+  cursor: pointer;
+}
+.os-window-btn:hover, .os-window-x:hover { background: linear-gradient(180deg, #fdf6e4, #ecdcb8); }
+.os-window-btn:active, .os-window-x:active { box-shadow: var(--sunken); }
+.os-window-x:hover { background: #c86a4a; color: #fff8ee; border-color: #8a3a20; }
+.os-window-badge { font-family: var(--sans); font-size: 9.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; border: 1px solid #b49a6d; color: #54371f; background: #f6ecd4; flex: 0 0 auto; }
+.os-window-badge.ok-badge { color: #3f5c2e; border-color: #5a7d43; background: #e2ead0; }
+
+.os-window-body { padding: 14px 16px; overflow-y: auto; flex: 1; min-height: 0; scrollbar-width: thin; scrollbar-color: #b39568 transparent; }
+.os-window-body::-webkit-scrollbar { width: 9px; }
+.os-window-body::-webkit-scrollbar-track { background: #efe3c8; }
+.os-window-body::-webkit-scrollbar-thumb { background: #c9ac7c; border: 1px solid #a98c5f; border-radius: 4px; }
+
+/* ---- error window ---- */
+.error-body { text-align: center; }
+.error-banner { font-family: var(--sans); font-weight: 700; font-size: 14px; color: #8f3220; padding: 11px; border: 1px solid #b3502e; border-radius: 5px; background: #f3ddd0; box-shadow: var(--sunken); animation: errPulse 1.6s infinite; }
+@keyframes errPulse { 0%, 100% { box-shadow: var(--sunken), 0 0 0 rgba(168, 60, 42, 0); } 50% { box-shadow: var(--sunken), 0 0 18px rgba(168, 60, 42, .28); } }
+.error-table { margin: 14px 0; border: 1px solid #a98c5f; border-radius: 5px; overflow: hidden; background: #fbf4e2; box-shadow: var(--sunken); }
+.error-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; font-size: 12px; color: #4a3218; }
+.error-row + .error-row { border-top: 1px solid #e2d2ae; }
+.err-status { color: var(--err); font-weight: 700; font-size: 11px; animation: statusBlink 1.1s steps(2) infinite; }
+@keyframes statusBlink { 50% { opacity: .25; } }
+.error-warning { font-size: 11px; color: var(--warn); font-weight: 700; }
+.error-countdown { margin: 12px 0 4px; font-family: var(--mono); font-size: 20px; font-weight: 700; letter-spacing: 3px; color: #8f3220; }
+.error-actions { margin-top: 14px; }
+.error-help { margin-top: 10px; font-size: 10px; color: #7d6244; font-family: var(--mono); }
+
+/* ---- buttons (beveled) ---- */
+.btn { font-family: var(--sans); font-weight: 700; font-size: 12px; padding: 10px 20px; border-radius: 4px; border: 1px solid #8a6a42; cursor: pointer; color: #4a3218; background: linear-gradient(180deg, #f7efdd, #e6d5b2); box-shadow: inset 1px 1px 0 #fffef8, inset -1px -1px 0 #b39568, 1px 2px 0 rgba(60, 40, 18, .22); transition: filter .15s, transform .1s, box-shadow .1s; }
+.btn:hover { filter: brightness(1.05); }
+.btn:active { transform: translateY(1px); box-shadow: var(--sunken); }
+.btn-primary { background: linear-gradient(180deg, #8a5a2c, #6e4520); color: #fdf3dd; text-shadow: 0 1px 0 rgba(0, 0, 0, .35); box-shadow: inset 1px 1px 0 rgba(255, 240, 210, .4), inset -1px -1px 0 rgba(60, 35, 12, .5), 1px 2px 0 rgba(60, 40, 18, .3); }
+.btn-primary:hover { background: linear-gradient(180deg, #96622f, #784c24); }
+.btn-ghost { background: linear-gradient(180deg, #f3e9d2, #e2d2ac); }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+
+/* ---- level title cinematic ---- */
+.level-title { z-index: 34; display: grid; place-items: center; background: radial-gradient(120% 120% at 50% 30%, #2c1a0a 0%, #170d04 80%); }
+.lt-inner { text-align: center; font-family: var(--mono); position: relative; }
+.lt-level { font-size: 13px; letter-spacing: 10px; color: #d9a441; opacity: 0; animation: ltFade 2.6s ease forwards; }
+.lt-name { font-size: clamp(26px, 6vw, 46px); font-weight: 700; letter-spacing: 8px; color: #f6e7c6; text-shadow: 0 0 26px rgba(230, 180, 90, .4), 0 0 80px rgba(230, 180, 90, .18); opacity: 0; margin: 10px 0 12px; animation: ltGlow 2.6s ease forwards .3s; }
+.lt-sub { font-size: clamp(9px, 1.8vw, 12px); letter-spacing: 4px; color: #a98c62; opacity: 0; animation: ltFade 2.6s ease forwards .7s; }
+@keyframes ltFade { 0% { opacity: 0; transform: translateY(10px); } 22% { opacity: 1; transform: translateY(0); } 78% { opacity: 1; } 100% { opacity: 0; transform: translateY(-8px); } }
+@keyframes ltGlow { 0% { opacity: 0; transform: scale(.92); filter: blur(8px); } 24% { opacity: 1; transform: scale(1); filter: blur(0); } 78% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.05); filter: blur(6px); } }
+.lt-scanline { position: absolute; left: -20%; right: -20%; top: 30%; height: 2px; background: linear-gradient(90deg, transparent, rgba(220, 175, 95, .7), transparent); animation: ltScan 2.2s ease-in-out infinite; }
+.lt-scanline.s2 { top: 60%; animation-delay: .5s; opacity: .5; }
+@keyframes ltScan { 0% { transform: translateY(-30px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(50px); opacity: 0; } }
+
+/* ---- game window ---- */
+.game-body { display: flex; flex-direction: column; gap: 14px; }
+.q-kicker { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 3px; color: #9c5a28; }
+.q-text { font-family: var(--sans); font-size: clamp(13px, 2.6vw, 15.5px); font-weight: 700; line-height: 1.55; color: #3a2413; }
+.q-sub { font-size: 12px; color: #7d6244; line-height: 1.5; }
+
+/* data cards (multi-select) */
+.cards-grid { display: flex; flex-wrap: wrap; gap: 9px; }
+.card-opt {
+  font-family: var(--sans); font-weight: 700; font-size: 11.5px;
+  padding: 10px 15px; border-radius: 4px; cursor: pointer;
+  color: #4a3218; background: linear-gradient(180deg, #f6ecd4, #e8d7b0);
+  border: 1px solid #a98c5f; box-shadow: var(--raised), 1px 2px 0 rgba(60, 40, 18, .15);
+  transition: all .15s;
+}
+.card-opt:hover { filter: brightness(1.04); transform: translateY(-1px); }
+.card-opt.sel { background: #f7e3bd; border-color: #7c5228; box-shadow: 0 0 0 1px #7c5228, var(--raised); }
+.card-opt.correct { background: #e2ead0; border-color: #5a7d43; color: #3f5c2e; box-shadow: 0 0 0 1px #5a7d43; }
+.card-opt.wrong { background: #f0dcd2; border-color: #a83c2a; color: #7c2d1e; }
+.card-opt.disabled { pointer-events: none; opacity: .55; }
+
+/* multiple choice */
+.mc-list { display: flex; flex-direction: column; gap: 8px; }
+.mc-opt {
+  display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;
+  font-family: var(--sans); font-weight: 600; font-size: 12.5px; color: #4a3218;
+  padding: 11px 14px; border-radius: 4px;
+  background: linear-gradient(180deg, #f6ecd4, #ead9b4);
+  border: 1px solid #a98c5f; box-shadow: var(--raised);
+  cursor: pointer; transition: all .15s;
+}
+.mc-opt .key { flex: 0 0 26px; height: 26px; display: grid; place-items: center; border-radius: 4px; border: 1px solid #8a6a42; font-weight: 700; font-size: 11px; color: #54371f; background: linear-gradient(180deg, #faf1da, #e2cfa6); box-shadow: var(--raised); }
+.mc-opt:hover { filter: brightness(1.04); border-color: #7c5228; transform: translateX(3px); }
+.mc-opt.correct { background: #e2ead0; border-color: #5a7d43; color: #3f5c2e; box-shadow: 0 0 0 1px #5a7d43; }
+.mc-opt.correct .key { border-color: #5a7d43; color: #3f5c2e; background: #eef2dd; }
+.mc-opt.wrong { background: #f0dcd2; border-color: #a83c2a; color: #7c2d1e; animation: shake .4s; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+/* data profile (click-to-select fields) */
+.db-profile { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.db-field { font-family: var(--sans); font-size: 11.5px; font-weight: 600; text-align: left; padding: 10px 12px; border-radius: 4px; border: 1px solid #a98c5f; background: linear-gradient(180deg, #f6ecd4, #ead9b4); box-shadow: var(--raised); cursor: pointer; transition: all .15s; color: #4a3218; }
+.db-field b { display: block; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: #9c5a28; margin-bottom: 3px; font-weight: 700; }
+.db-field:hover { filter: brightness(1.04); border-color: #7c5228; }
+.db-field.sel { background: #f7e3bd; border-color: #7c5228; box-shadow: 0 0 0 1px #7c5228, var(--raised); }
+.db-field.correct { background: #e2ead0; border-color: #5a7d43; color: #3f5c2e; }
+.db-field.wrong { background: #f0dcd2; border-color: #a83c2a; color: #7c2d1e; animation: shake .4s; }
+
+/* sql table */
+.sql-table-wrap { overflow-x: auto; border: 1px solid #a98c5f; border-radius: 5px; background: #fbf4e2; box-shadow: var(--sunken); }
+.sql-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 11px; }
+.sql-table th { position: sticky; top: 0; text-align: left; padding: 9px 12px; font-size: 9px; letter-spacing: 1.5px; color: #54371f; background: #e9d8b2; border-bottom: 1px solid #a98c5f; white-space: nowrap; }
+.sql-table td { padding: 8px 12px; color: #4a3218; border-bottom: 1px solid #e8d8b4; white-space: nowrap; }
+.sql-table tr:nth-child(even) td { background: #f6edd6; }
+.sql-table tr:last-child td { border-bottom: none; }
+.sql-table .st-avail { color: #4f6a34; font-weight: 700; }
+.sql-table .st-borrowed { color: #a87b23; font-weight: 700; }
+.sql-table .st-hidden { opacity: .22; }
+.sql-table tr.row-highlight td { background: #f4e0b8; color: #33220f; }
+
+/* filter chips */
+.filter-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.filter-chip { font-family: var(--sans); font-weight: 700; font-size: 10.5px; padding: 7px 14px; border-radius: 4px; border: 1px solid #a98c5f; background: linear-gradient(180deg, #f6ecd4, #e8d7b0); box-shadow: var(--raised); color: #4a3218; cursor: pointer; transition: all .12s; }
+.filter-chip:hover { filter: brightness(1.05); }
+.filter-chip.on { background: #f0dcae; border-color: #7c5228; color: #54371f; box-shadow: 0 0 0 1px #7c5228, var(--sunken); }
+
+/* log panel (paper printout) */
+.log-panel { font-family: var(--mono); font-size: 12px; line-height: 1.8; color: #4a3218; border: 1px solid #a98c5f; border-radius: 5px; padding: 12px 16px; background: #fbf4e2; box-shadow: var(--sunken); }
+.log-panel .hl { color: #7c5228; font-weight: 700; }
+.log-panel .bad { color: #a83c2a; font-weight: 700; }
+.log-panel .num { color: #9c5a28; font-weight: 700; }
+.log-panel dim { color: #8a7358; }
+
+/* drag & drop */
+.dd-slots { display: flex; flex-direction: column; gap: 8px; margin: 4px 0; }
+.dd-slot { display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 6px 10px; border-radius: 5px; border: 1px dashed #b49a6d; background: #f8f1de; box-shadow: var(--sunken); transition: all .15s; }
+.dd-slot .slot-num { flex: 0 0 24px; height: 24px; display: grid; place-items: center; font-family: var(--mono); font-weight: 700; font-size: 10px; color: #7c5228; border: 1px solid #b49a6d; border-radius: 4px; background: #f6ecd4; }
+.dd-slot .slot-card { flex: 1; }
+.dd-slot.over { border-color: #7c5228; background: #f2e2c2; }
+.dd-slot.locked { border-style: solid; }
+.dd-pool { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; border: 1px solid #a98c5f; border-radius: 5px; background: #efe3c8; box-shadow: var(--sunken); min-height: 54px; }
+.dd-chip { font-family: var(--sans); font-weight: 700; font-size: 11.5px; padding: 10px 14px; border-radius: 4px; border: 1px solid #8a6a42; background: linear-gradient(180deg, #f6ecd4, #e2cfa6); box-shadow: var(--raised), 1px 2px 0 rgba(60, 40, 18, .18); color: #4a3218; cursor: grab; user-select: none; touch-action: none; transition: transform .12s, box-shadow .12s; }
+.dd-chip:active { cursor: grabbing; transform: scale(1.03); }
+.dd-chip.correct { background: #e2ead0; border-color: #5a7d43; color: #3f5c2e; }
+.dd-chip.wrong { background: #f0dcd2; border-color: #a83c2a; color: #7c2d1e; }
+.dd-chip.dragging { opacity: .4; }
+.dd-chip.sel { background: #f0dcae; border-color: #7c5228; box-shadow: 0 0 0 1px #7c5228, var(--raised); }
+.dd-chip.ghost { border-style: dashed; opacity: .5; background: transparent; box-shadow: none; }
+.dd-chip.placed { cursor: pointer; }
+.dd-slot { position: relative; z-index: 2; }
+
+/* feedback banner */
+.fb { font-family: var(--sans); font-weight: 700; font-size: 12px; padding: 11px 14px; border-radius: 5px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.fb.ok { color: #3f5c2e; border: 1px solid #5a7d43; background: #e9efda; box-shadow: var(--raised); }
+.fb.no { color: #7c2d1e; border: 1px solid #a83c2a; background: #f0dcd2; box-shadow: var(--raised); animation: shake .4s; }
+.fb .code { margin-left: auto; color: #9c5a28; }
+
+.q-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.q-meta { display: flex; align-items: center; gap: 10px; }
+.q-meta .q-tag { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 2px; color: #9c5a28; }
+
+/* progress + levels footer */
+.game-progress { flex: 0 0 auto; display: flex; align-items: center; gap: 12px; padding: 8px 14px; border-top: 1px solid #c9ac7c; background: linear-gradient(180deg, #efe3c8, #e6d6b2); }
+.gp-label { font-family: var(--sans); font-size: 9px; font-weight: 700; letter-spacing: 1px; color: #7d6244; white-space: nowrap; }
+.gp-bar { flex: 1; height: 12px; border-radius: 3px; border: 1px solid #8a6a42; background: #fbf4e2; box-shadow: var(--sunken); overflow: hidden; }
+.gp-fill { display: block; height: 100%; width: 0%; background-image: repeating-linear-gradient(90deg, transparent 0 7px, rgba(255, 248, 230, .18) 7px 9px), linear-gradient(180deg, #8a5a2c, #6e4520); transition: width .5s ease; }
+.gp-count { font-family: var(--mono); font-size: 11px; font-weight: 700; color: #54371f; white-space: nowrap; }
+
+.game-levels { flex: 0 0 auto; display: flex; gap: 6px; padding: 8px 14px 10px; border-top: 1px solid #c9ac7c; background: #e9d9b6; overflow-x: auto; scrollbar-width: none; }
+.game-levels::-webkit-scrollbar { display: none; }
+.lv-chip { display: flex; align-items: center; gap: 6px; font-family: var(--sans); font-weight: 700; font-size: 9.5px; padding: 6px 11px; border-radius: 999px; border: 1px solid #b49a6d; background: #f6ecd4; color: #7d6244; white-space: nowrap; flex: 0 0 auto; }
+.lv-chip.done { color: #3f5c2e; border-color: #5a7d43; background: #e2ead0; }
+.lv-chip.now { color: #54371f; border-color: #7c5228; background: #f0dcae; box-shadow: 0 0 0 1px #7c5228; }
+.lv-chip.locked { opacity: .45; }
+
+/* ---- terminal (dark warm DOS) ---- */
+.terminal-body { font-family: var(--mono); font-size: clamp(11px, 2.2vw, 13px); line-height: 1.75; color: #e8cf9e; background: #241608; cursor: text; }
+.terminal-body .t-line { white-space: pre-wrap; word-break: break-word; }
+.terminal-body .t-line .prompt { color: #cbb98f; }
+.terminal-body .t-line .warn { color: #d9a441; }
+.terminal-body .t-line .err { color: #d97757; }
+.terminal-body .t-line .ok { color: #a3c268; }
+.terminal-body .t-line .dim { color: #8a6f4d; }
+.terminal-body .t-line .cy { color: #e3b877; }
+.term-line { display: flex; align-items: center; flex-wrap: wrap; }
+.term-prompt { color: #a3c268; margin-right: 8px; }
+.term-input { color: #f2e2c2; }
+.term-caret { display: inline-block; width: 9px; height: 1.1em; background: #e8cf9e; margin-left: 2px; animation: caretBlink 1s steps(1) infinite; vertical-align: text-bottom; }
+@keyframes caretBlink { 50% { opacity: 0; } }
+.term-hint { flex: 0 0 auto; font-family: var(--sans); font-size: 11px; color: #54371f; padding: 8px 14px 10px; border-top: 1px solid #c9ac7c; background: #efe3c8; }
+.term-hint kbd { font-family: var(--mono); color: #54371f; border: 1px solid #8a6a42; border-radius: 3px; padding: 1px 6px; font-size: 9px; background: #f6ecd4; box-shadow: var(--raised); }
+.term-input-catcher { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; border: 0; background: transparent; color: transparent; font-size: 16px; font-family: var(--mono); }
+
+/* progress bar (terminal style) */
+.term-progress { font-family: var(--mono); white-space: pre; color: #e3b877; }
+
+/* ---- database window ---- */
+.database-body { display: flex; flex-direction: column; gap: 12px; }
+
+/* ---- notes / files ---- */
+.notes-body, .files-body { display: flex; flex-direction: column; gap: 8px; font-family: var(--sans); font-size: 11.5px; color: #4a3218; }
+.notes-item, .files-item { padding: 10px 12px; border: 1px solid #c9ac7c; border-radius: 4px; background: #fbf4e2; box-shadow: var(--raised); }
+
+/* ---- final cinematic ---- */
+.final-cine { z-index: 36; display: grid; place-items: center; background: radial-gradient(90% 90% at 50% 40%, rgba(58, 36, 16, .9), rgba(20, 11, 3, .96)); }
+.final-cine-inner { text-align: center; padding: 20px; max-width: 640px; }
+.fc-title { font-family: var(--mono); font-size: clamp(22px, 5.4vw, 40px); font-weight: 700; letter-spacing: 4px; color: #ffe9b8; text-shadow: 0 0 30px rgba(230, 180, 90, .5); animation: popIn .7s cubic-bezier(.2, 1.4, .4, 1) both; }
+.fc-sub { margin-top: 10px; font-family: var(--mono); font-size: clamp(13px, 3vw, 20px); letter-spacing: 5px; color: #e3b877; animation: popIn .7s ease .25s both; }
+.fc-text { margin-top: 14px; font-size: clamp(12px, 2.4vw, 14px); color: #d9c9a8; line-height: 1.7; animation: popIn .7s ease .45s both; }
+.fc-pills { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.fc-pill { font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; padding: 7px 13px; border-radius: 999px; color: #dce8cc; border: 1px solid #5a7d43; background: rgba(90, 125, 67, .18); animation: popIn .5s ease both; }
+.fc-pill:nth-child(1) { animation-delay: .65s; } .fc-pill:nth-child(2) { animation-delay: .8s; }
+.fc-pill:nth-child(3) { animation-delay: .95s; } .fc-pill:nth-child(4) { animation-delay: 1.1s; }
+@keyframes popIn { from { opacity: 0; transform: translateY(14px) scale(.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.fc-score { margin-top: 18px; font-family: var(--mono); font-size: clamp(13px, 2.6vw, 17px); font-weight: 700; letter-spacing: 3px; color: #f6e7c6; animation: popIn .6s ease 1.25s both; }
+.fc-actions { margin-top: 22px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; animation: popIn .6s ease 1.5s both; }
+
+/* ---- glitch overlay (warm) ---- */
+.glitch-overlay { position: absolute; inset: 0; z-index: 50; pointer-events: none; opacity: 0; }
+.glitch-overlay.on { animation: glitchFlash .9s steps(2) 3; }
+@keyframes glitchFlash {
+  0% { opacity: 0; }
+  10% { opacity: 1; background: repeating-linear-gradient(0deg, rgba(168, 60, 42, .07) 0 2px, transparent 2px 7px); transform: translateX(-4px); }
+  20% { opacity: 1; background: repeating-linear-gradient(90deg, rgba(220, 160, 60, .08) 0 3px, transparent 3px 9px); transform: translateX(5px); }
+  35% { opacity: 0; }
+  45% { opacity: 1; background: repeating-linear-gradient(0deg, rgba(255, 245, 220, .06) 0 1px, transparent 1px 5px); transform: translateX(-2px) skewX(1.5deg); }
+  60% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.global-scanlines { opacity: .4; }
+.global-crt { opacity: .45; }
+
+/* fx canvas */
+#fx-canvas { position: fixed; inset: 0; z-index: 80; pointer-events: none; }
+
+/* typing banner in terminal bar */
+.type-banner { display: none; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 760px) {
+  .desk-lab { height: 88vh; }
+  .monitor { width: min(400px, 88vw); }
+  .wall-shelf, .wall-poster { display: none; }
+  .wall-calendar { left: 58%; transform: scale(.8); transform-origin: top left; }
+  .lamp { left: 4.5%; }
+  .wall-clock { right: 5%; width: 52px; height: 52px; }
+  .wall-window { width: 150px; height: 185px; left: 4%; }
+  .plant { left: 1.5%; }
+  .mug { right: 6%; }
+  .globe, .photo-frame { display: none; }
+  .keyboard { width: 230px; }
+  .os-window { top: 50%; }
+  .desktop-icons { flex-direction: row; right: 14px; flex-wrap: wrap; justify-content: flex-start; }
+  .d-icon { width: 66px; }
+  .bezel-top .bezel-badge, .bezel-bottom .bezel-badge { font-size: 8px; letter-spacing: 1px; }
+  .dd-slot { min-height: 42px; }
+  .dd-chip { font-size: 10.5px; padding: 9px 11px; }
+}
+
+@media (max-width: 420px) {
+  .book-stack { display: none; }
+  .mousepad, .mouse { display: none; }
+  .lamp { display: none; }
+  .wall-window, .wall-calendar { display: none; }
+  .monitor { width: 94vw; }
+  .scr-title { letter-spacing: 2px; }
+  .desk-hint { font-size: 8px; letter-spacing: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================ SCENE 1 : DESK ============================ -->
+<div id="desk-scene" class="scene">
+  <div class="room-wall"></div>
+  <div class="room-floor"></div>
+  <div class="baseboard"></div>
+
+  <div class="window-glow"></div>
+  <div class="wall-window"><div class="ww-bar b-h"></div><div class="ww-bar b-v"></div><div class="ww-shine"></div><div class="ww-trees"></div><div class="ww-sill"></div></div>
+
+  <div class="wall-clock"><span class="wc-hand hh"></span><span class="wc-hand mh"></span><span class="wc-pin"></span></div>
+
+  <div class="wall-poster wp-a"><b>PERPUSTAKAAN DIGITAL</b><i></i><i></i><i></i><em>SMAN 6 TS</em></div>
+  <div class="wall-poster wp-b"><b>JADWAL PIKET</b><span>SENIN — X-A</span><span>SELASA — X-B</span><span>RABU — X-C</span></div>
+
+  <div class="wall-calendar"><b>SEP 2026</b><div class="cal-grid"><span>S</span><span>S</span><span>R</span><span>K</span><span>J</span><span>S</span><span>M</span><i></i><i></i><u>14</u><u>15</u><u>16</u><u>17</u><u>18</u><u>19</u><u>20</u><u class="today">21</u><u>22</u><u>23</u><u>24</u><u>25</u><u>26</u><u>27</u><u>28</u></div></div>
+
+  <div class="wall-shelf"><div class="ws-books"><i style="--c:#9c5a28"></i><i style="--c:#b07d2a"></i><i style="--c:#6b4a2c"></i><i style="--c:#a83c2a"></i><i style="--c:#5a7d43"></i><i style="--c:#8a5a2c"></i><i style="--c:#c9b285"></i><i style="--c:#54371f"></i></div><div class="ws-board"></div></div>
+
+  <div class="desk-wrap">
+    <div class="desk-lab" id="desk-lab">
+
+      <div class="desk-floor-shadow"></div>
+
+      <div class="prop plant"><i class="leaf l1"></i><i class="leaf l2"></i><i class="leaf l3"></i><i class="leaf l4"></i><div class="plant-pot"></div></div>
+
+      <div class="prop desk-surface"></div>
+      <div class="desk-edge"></div>
+      <div class="desk-drawer"><span class="dr-handle"></span></div>
+      <div class="desk-leg leg-l"></div>
+      <div class="desk-leg leg-r"></div>
+
+      <div class="prop lamp"><i class="lp-base"></i><i class="lp-arm1"></i><i class="lp-arm2"></i><i class="lp-head"></i><i class="lp-glow"></i></div>
+
+      <div class="prop speaker sp-l"><span class="grille"></span><span class="sp-led"></span></div>
+      <div class="prop speaker sp-r"><span class="grille"></span><span class="sp-led"></span></div>
+
+      <div class="prop photo-frame"><b>3A</b><span>KELAS INFORMATIKA</span></div>
+      <div class="prop diskettes"><span class="dk dk1"></span><span class="dk dk2"></span><span class="dk dk3"></span><div class="dk-box"></div></div>
+      <div class="prop globe"><div class="gl-map"></div><div class="gl-stand"></div><div class="gl-foot"></div></div>
+
+      <div class="prop book-stack"><span></span><span></span><span></span></div>
+      <div class="prop pencil-cup"><i class="pencil p1"></i><i class="pencil p2"></i><i class="pencil p3"></i><i class="pen"></i><div class="pc-body"></div></div>
+      <div class="prop papers"><span class="paper pa1"></span><span class="paper pa2"></span></div>
+
+      <div class="monitor-shadow"></div>
+      <div class="m-cable"></div>
+
+      <!-- MONITOR -->
+      <div class="monitor" id="monitor" role="button" tabindex="0" aria-label="Mulai permainan">
+        <div class="monitor-stand">
+          <div class="stand-neck"></div>
+          <div class="stand-foot"></div>
+        </div>
+        <div class="monitor-frame">
+          <div class="monitor-screen">
+            <div class="screen-off"></div>
+            <div class="screen-content">
+              <div class="scr-brand">
+                <span class="scr-logo"></span>
+                <span class="scr-title">SMAN 6 TAMBUN SELATAN</span>
+                <span class="scr-sub">LIBRARY COMPUTER</span>
+              </div>
+              <div class="scr-cta">CLICK THE COMPUTER TO BEGIN</div>
+              <div class="scr-corner c-tl"></div>
+              <div class="scr-corner c-br"></div>
+            </div>
+            <div class="scanlines"></div>
+            <div class="glass"></div>
+            <div class="screen-glare"></div>
+            <div class="crt-flicker"></div>
+          </div>
+          <div class="monitor-power">
+            <span class="p-led"></span>
+            <span class="p-label">SMAN6 · LC-88</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="prop sticky-notes"><span class="sn sn1">!</span><span class="sn sn2">→</span><span class="sn sn3">✎</span></div>
+      <div class="prop mug"><span class="steam s1"></span><span class="steam s2"></span><div class="mug-handle"></div><div class="mug-body"></div></div>
+      <div class="prop headphones"><span class="hp-band"></span><span class="hp-cup c1"></span><span class="hp-cup c2"></span></div>
+
+      <div class="prop mousepad"></div>
+      <div class="prop mouse" id="desk-mouse"></div>
+      <div class="prop keyboard" id="desk-keyboard">
+        <span class="kb-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        <span class="kb-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        <span class="kb-row space-row"><i></i></span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="room-vignette"></div>
+  <div class="desk-hint">SMAN 6 TAMBUN SELATAN · INFORMATIKA KELAS 10 · BERPIKIR KOMPUTASIONAL</div>
+  <div class="desk-badge">COMPUTATIONAL THINKING</div>
+</div>
+
+<!-- ============================ SCENE 2 : COMPUTER UI ============================ -->
+<div id="computer-scene" class="scene hidden-scene">
+  <div class="computer-room-bg"></div>
+
+  <div class="computer-frame">
+    <div class="bezel-top">
+      <span class="bezel-badge">SMAN 6 TAMBUN SELATAN · SCHOOL COMPUTER SYSTEM</span>
+      <span class="bezel-clock" id="bezel-clock">--:--</span>
+    </div>
+
+    <div class="computer-screen">
+
+      <div class="zoom-overlay" id="zoom-overlay"></div>
+
+      <!-- BOOT -->
+      <div id="boot-screen" class="screen-layer hidden">
+        <div class="boot-inner">
+          <div class="boot-logo"><span class="boot-logo-glyph"></span></div>
+          <div class="boot-line">SMAN 6 TAMBUN SELATAN</div>
+          <div class="boot-line small">SCHOOL COMPUTER SYSTEM</div>
+          <div class="boot-line status" id="boot-status">BOOTING...</div>
+          <div class="boot-bar"><span class="boot-bar-fill"></span></div>
+          <div class="boot-tiny">BIOS v6.2 · 64MB RAM OK · LIBRARY DISK OK</div>
+        </div>
+      </div>
+
+      <!-- DESKTOP -->
+      <div id="desktop-screen" class="screen-layer hidden">
+        <div class="desktop-icons" id="desktop-icons"></div>
+        <div class="desktop-hint" id="desktop-hint"></div>
+        <div class="desktop-taskbar">
+          <div class="taskbar-start"><span class="ts-logo">◈</span><span>Start</span></div>
+          <div class="taskbar-items" id="taskbar-items"></div>
+          <div class="taskbar-tray"><span id="taskbar-clock">--:--</span></div>
+        </div>
+      </div>
+
+      <!-- ERROR WINDOW -->
+      <div id="error-window" class="os-window hidden" data-w="560">
+        <div class="os-window-bar">
+          <span class="os-window-ic">📚</span>
+          <span class="os-window-title">SMAN 6 TAMBUN SELATAN — LIBRARY MANAGEMENT SYSTEM</span>
+          <span class="os-window-ctrls"><button class="os-window-btn" aria-label="Minimize">_</button><button class="os-window-btn" aria-label="Maximize">□</button><button class="os-window-x" aria-label="Tutup">✕</button></span>
+        </div>
+        <div class="os-window-body error-body">
+          <div class="error-banner">⚠ SYSTEM ERROR DETECTED</div>
+          <div class="error-table">
+            <div class="error-row"><span>Library Database</span><b class="err-status">[ERROR]</b></div>
+            <div class="error-row"><span>Book Data</span><b class="err-status">[ERROR]</b></div>
+            <div class="error-row"><span>Borrow Transaction</span><b class="err-status">[ERROR]</b></div>
+            <div class="error-row"><span>Return Transaction</span><b class="err-status">[ERROR]</b></div>
+          </div>
+          <div class="error-warning">WARNING: Library system is unstable.</div>
+          <div class="error-countdown" id="error-countdown">SYSTEM LOCKDOWN IN: 20:00</div>
+          <div class="error-actions">
+            <button class="btn btn-primary" id="btn-open-terminal">[ OPEN TERMINAL ]</button>
+          </div>
+          <div class="error-help">&gt; Assistance required.</div>
+        </div>
+      </div>
+
+      <!-- LEVEL TITLE CINEMATIC -->
+      <div id="level-title" class="screen-layer level-title hidden">
+        <div class="lt-inner">
+          <div class="lt-level" id="lt-level">LEVEL 01</div>
+          <div class="lt-name" id="lt-name">DECOMPOSITION</div>
+          <div class="lt-sub" id="lt-sub">BREAK THE PROBLEM INTO SMALLER PARTS</div>
+          <div class="lt-scanline"></div>
+          <div class="lt-scanline s2"></div>
+        </div>
+      </div>
+
+      <!-- GAME WINDOW -->
+      <div id="game-window" class="os-window hidden" data-w="640">
+        <div class="os-window-bar">
+          <span class="os-window-ic">⚙</span>
+          <span class="os-window-title" id="game-window-title">PROCESS 01 — DECOMPOSITION</span>
+          <span class="os-window-badge" id="game-window-badge">LEVEL 01</span>
+          <span class="os-window-ctrls"><button class="os-window-btn" aria-label="Minimize">_</button><button class="os-window-btn" aria-label="Maximize">□</button><button class="os-window-x" aria-label="Tutup">✕</button></span>
+        </div>
+        <div class="os-window-body game-body" id="game-body"></div>
+        <div class="game-progress" id="game-progress">
+          <div class="gp-label">RECOVERY PROGRESS</div>
+          <div class="gp-bar"><span class="gp-fill" id="gp-fill"></span></div>
+          <div class="gp-count" id="gp-count">0 / 17</div>
+        </div>
+        <div class="game-levels" id="game-levels"></div>
+      </div>
+
+      <!-- RECOVERY FINISH WINDOW -->
+      <div id="recovery-window" class="os-window hidden" data-w="640">
+        <div class="os-window-bar">
+          <span class="os-window-ic">🛠</span>
+          <span class="os-window-title">RECOVERY SYSTEM</span>
+          <span class="os-window-badge ok-badge">RECOVERY</span>
+          <span class="os-window-ctrls"><button class="os-window-btn" aria-label="Minimize">_</button><button class="os-window-btn" aria-label="Maximize">□</button><button class="os-window-x" aria-label="Tutup">✕</button></span>
+        </div>
+        <div class="os-window-body terminal-body" id="recovery-body"></div>
+      </div>
+
+      <!-- TERMINAL WINDOW -->
+      <div id="terminal-window" class="os-window hidden" data-w="640">
+        <div class="os-window-bar">
+          <span class="os-window-ic">💻</span>
+          <span class="os-window-title">C:\SMAN6_LIBRARY — CMD</span>
+          <span class="os-window-badge">TERMINAL</span>
+          <span class="os-window-ctrls"><button class="os-window-btn" aria-label="Minimize">_</button><button class="os-window-btn" aria-label="Maximize">□</button><button class="os-window-x" aria-label="Tutup">✕</button></span>
+        </div>
+        <div class="os-window-body terminal-body">
+          <div id="terminal-output"></div>
+          <div id="terminal-input-line" class="term-line">
+            <span class="term-prompt">C:\SMAN6_LIBRARY&gt;</span>
+            <span id="terminal-input" class="term-input"></span>
+            <span class="term-caret"></span>
+          </div>
+        </div>
+        <div class="term-hint" id="term-hint">Ketik <b>recovery</b> lalu tekan <kbd>ENTER</kbd></div>
+        <input class="term-input-catcher" id="term-input-catcher" type="text" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-label="Terminal input">
+      </div>
+
+      <!-- DATABASE WINDOW -->
+      <div id="database-window" class="os-window hidden" data-w="680">
+        <div class="os-window-bar">
+          <span class="os-window-ic">📊</span>
+          <span class="os-window-title" id="database-title">📊 LIBRARY DATABASE</span>
+          <span class="os-window-badge">DATABASE</span>
+          <span class="os-window-ctrls"><button class="os-window-btn" aria-label="Minimize">_</button><button class="os-window-btn" aria-label="Maximize">□</button><button class="os-window-x" aria-label="Tutup">✕</button></span>
+        </div>
+        <div class="os-window-body database-body" id="database-body"></div>
+      </div>
+
+      <!-- NOTES WINDOW -->
+      <div id="notes-window" class="os-window hidden" data-w="420">
+        <div class="os-window-bar">
+          <span class="os-window-ic">📝</span>
+          <span class="os-window-title">📝 NOTES</span>
+          <span class="os-window-badge">NOTES</span>
+          <span class="os-window-ctrls"><button class="os-window-btn" aria-label="Minimize">_</button><button class="os-window-btn" aria-label="Maximize">□</button><button class="os-window-x" aria-label="Tutup">✕</button></span>
+        </div>
+        <div class="os-window-body notes-body">
+          <div class="notes-item">CT — Computational Thinking</div>
+          <div class="notes-item">4 Pilar: Decomposition · Pattern Recognition · Abstraction · Algorithm</div>
+          <div class="notes-item">Game: 17 challenges · 4 levels + final</div>
+        </div>
+      </div>
+
+      <!-- FILES WINDOW -->
+      <div id="files-window" class="os-window hidden" data-w="420">
+        <div class="os-window-bar">
+          <span class="os-window-ic">📁</span>
+          <span class="os-window-title">📁 FILES (C:\SMAN6_LIBRARY)</span>
+          <span class="os-window-badge">FILES</span>
+          <span class="os-window-ctrls"><button class="os-window-btn" aria-label="Minimize">_</button><button class="os-window-btn" aria-label="Maximize">□</button><button class="os-window-x" aria-label="Tutup">✕</button></span>
+        </div>
+        <div class="os-window-body files-body">
+          <div class="files-item">📚 books.db</div>
+          <div class="files-item">🗄 students.db</div>
+          <div class="files-item">🔁 transactions.db</div>
+          <div class="files-item">❓ questions.db</div>
+          <div class="files-item">💻 recovery.exe</div>
+        </div>
+      </div>
+
+      <div class="glitch-overlay" id="glitch-overlay"></div>
+      <div class="scanlines global-scanlines"></div>
+      <div class="crt-flicker global-crt"></div>
+    </div>
+
+    <div class="bezel-bottom">
+      <span class="bezel-badge">SMAN 6 · LC-88 · LIBRARY COMPUTER</span>
+      <span class="bezel-status" id="bezel-status">OFFLINE</span>
+      <span class="bezel-status-dot"></span>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL CINEMATIC (body-level overlay: tetap tampil meski scene computer disembunyikan) -->
+<div id="final-cine" class="screen-layer final-cine hidden">
+  <div class="final-cine-inner">
+    <div class="fc-title">🎉 CONGRATULATIONS! 🎉</div>
+    <div class="fc-sub">LIBRARY SYSTEM RECOVERED</div>
+    <div class="fc-text">You successfully completed<br>the Computational Thinking challenge.</div>
+    <div class="fc-pills">
+      <span class="fc-pill">DECOMPOSITION ✓</span>
+      <span class="fc-pill">PATTERN RECOGNITION ✓</span>
+      <span class="fc-pill">ABSTRACTION ✓</span>
+      <span class="fc-pill">ALGORITHM ✓</span>
+    </div>
+    <div class="fc-score" id="fc-score">17 / 17 CHALLENGES COMPLETED</div>
+    <div class="fc-actions">
+      <button class="btn btn-ghost" id="btn-play-again">MAIN LAGI</button>
+      <button class="btn btn-ghost" id="btn-exit-desk">KELUAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFETTI CANVAS -->
+<canvas id="fx-canvas"></canvas>
+
+<!-- SCRIPTS -->
+<script>
+/* ============================================================
+   LIBRARY RECOVERY — SIMULATED SQL DATABASE
+   Konsep query SQL disimulasikan dengan JavaScript/local data.
+   ============================================================ */
+
+const SQL = (() => {
+  // CREATE TABLE books ( id, title, author, genre, pages, cover_color, status );
+  const BOOKS = [
+    { id: 101, title: 'Bumi', author: 'Tere Liye', genre: 'Fiksi', pages: 440, cover_color: 'Biru', status: 'Tersedia' },
+    { id: 102, title: 'Laskar Pelangi', author: 'Andrea Hirata', genre: 'Fiksi', pages: 529, cover_color: 'Kuning', status: 'Dipinjam' },
+    { id: 103, title: 'Laut Bercerita', author: 'Leila S. Chudori', genre: 'Fiksi', pages: 379, cover_color: 'Merah', status: 'Tersedia' },
+    { id: 104, title: 'Negeri 5 Menara', author: 'Ahmad Fuadi', genre: 'Fiksi', pages: 423, cover_color: 'Hijau', status: 'Dipinjam' },
+    { id: 105, title: 'Atomic Habits', author: 'James Clear', genre: 'Nonfiksi', pages: 320, cover_color: 'Putih', status: 'Tersedia' },
+    { id: 106, title: 'Filosofi Teras', author: 'Henry Manampiring', genre: 'Nonfiksi', pages: 344, cover_color: 'Biru', status: 'Dipinjam' },
+    { id: 107, title: 'Dilan 1990', author: 'Pidi Baiq', genre: 'Fiksi', pages: 332, cover_color: 'Hitam', status: 'Tersedia' },
+    { id: 108, title: 'Bumi Manusia', author: 'Pramoedya Ananta Toer', genre: 'Fiksi', pages: 535, cover_color: 'Cokelat', status: 'Dipinjam' },
+    { id: 109, title: 'Janji', author: 'Tere Liye', genre: 'Fiksi', pages: 488, cover_color: 'Hijau', status: 'Tersedia' },
+  ];
+
+  // CREATE TABLE students ( id, name, class, book, status );
+  const STUDENTS = [
+    { id: 1027, name: 'Baihaqi', class: 'X-A', book: 'Laskar Pelangi', status: 'NOT RETURNED' },
+    { id: 1031, name: 'Citra', class: 'X-A', book: 'Janji', status: 'RETURNED' },
+    { id: 1042, name: 'Dewi', class: 'X-B', book: 'Dilan 1990', status: 'NOT RETURNED' },
+    { id: 1050, name: 'Fajar', class: 'X-B', book: 'Laut Bercerita', status: 'RETURNED' },
+    { id: 1062, name: 'Gita', class: 'X-C', book: 'Bumi Manusia', status: 'NOT RETURNED' },
+  ];
+
+  // CREATE TABLE transactions ( student_id, book, borrow_date, return_date, status, color );
+  const TRANSACTIONS = [
+    { student_id: 1027, book: 'Bumi', borrow_date: '01/09/2026', return_date: '-', status: 'Late', color: 'Blue' },
+    { student_id: 1031, book: 'Janji', borrow_date: '02/09/2026', return_date: '09/09/2026', status: 'Returned', color: 'Green' },
+    { student_id: 1042, book: 'Dilan', borrow_date: '03/09/2026', return_date: '-', status: 'Late', color: 'Black' },
+    { student_id: 1050, book: 'Laut Bercerita', borrow_date: '04/09/2026', return_date: '11/09/2026', status: 'Returned', color: 'Red' },
+    { student_id: 1062, book: 'Bumi Manusia', borrow_date: '05/09/2026', return_date: '-', status: 'Late', color: 'Brown' },
+  ];
+
+  // CREATE TABLE weekly_log ( day, borrowed, returned );
+  const WEEKLY_LOG = [
+    { day: 'Senin', borrowed: 40, returned: 15 },
+    { day: 'Selasa', borrowed: 55, returned: 20 },
+    { day: 'Rabu', borrowed: 40, returned: 15 },
+    { day: 'Kamis', borrowed: 55, returned: 20 },
+    { day: 'Jumat', borrowed: 40, returned: 15 },
+  ];
+
+  const WEEKLY_LOG_EN = [
+    { day: 'Monday', borrowed: 40, returned: 15 },
+    { day: 'Tuesday', borrowed: 55, returned: 20 },
+    { day: 'Wednesday', borrowed: 40, returned: 15 },
+    { day: 'Thursday', borrowed: 55, returned: 20 },
+    { day: 'Friday', borrowed: 40, returned: 15 },
+  ];
+
+  const BOOK_IDS_ODD = [101, 103, 105, 107, 109];
+
+  const TABLES = { books: BOOKS, students: STUDENTS, transactions: TRANSACTIONS, weekly_log: WEEKLY_LOG };
+
+  // SELECT * FROM books WHERE status = 'Tersedia';
+  function select(table, whereFn) {
+    const rows = TABLES[table] || [];
+    return whereFn ? rows.filter(whereFn) : rows.slice();
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // Render an HTML <table> from rows (with optional hidden columns + hidden rows)
+  function renderTable(table, columns, opts = {}) {
+    const rows = select(table).filter(opts.rowFilter || (() => true));
+    const cols = columns || Object.keys(rows[0] || { id: 1 });
+    const hiddenRows = opts.hiddenRowIds || [];
+    const highlight = opts.highlightValue || null;
+    let html = `<div class="sql-table-wrap"><table class="sql-table"><thead><tr>`;
+    for (const c of cols) html += `<th>${esc(c.replace(/_/g, ' ').toUpperCase())}</th>`;
+    html += `</tr></thead><tbody>`;
+    for (const r of rows) {
+      if (hiddenRows.includes(r.id) || hiddenRows.includes(r.student_id)) continue;
+      html += `<tr${highlight && String(Object.values(r)).includes(highlight) ? ' class="row-highlight"' : ''}>`;
+      for (const c of cols) {
+        let v = r[c];
+        let cls = '';
+        if (c === 'status') {
+          if (v === 'Tersedia' || v === 'Returned' || v === 'RETURNED') cls = 'st-avail';
+          else if (v === 'Dipinjam' || v === 'Late' || v === 'NOT RETURNED') cls = 'st-borrowed';
+        }
+        html += `<td class="${cls}">${esc(v)}</td>`;
+      }
+      html += `</tr>`;
+    }
+    html += `</tbody></table></div>`;
+    return html;
+  }
+
+  return { BOOKS, STUDENTS, TRANSACTIONS, WEEKLY_LOG, WEEKLY_LOG_EN, BOOK_IDS_ODD, select, renderTable, esc };
+})();
+
+window.SQL = SQL;
+
+</script>
+<script>
+/* ============================================================
+   LIBRARY RECOVERY — SOUND FX (WebAudio, tanpa file eksternal)
+   ============================================================ */
+
+const Sfx = (() => {
+  let ctx = null;
+
+  function ac() {
+    if (!ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) ctx = new AC();
+    }
+    if (ctx && ctx.state === 'soundoff') ctx.resume();
+    else if (ctx && ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+
+  function tone(freq, dur, type = 'sine', vol = 0.05, delay = 0, slide = 0) {
+    const c = ac();
+    if (!c) return;
+    try {
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = type;
+      const t0 = c.currentTime + delay;
+      o.frequency.setValueAtTime(freq, t0);
+      if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, freq + slide), t0 + dur);
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(vol, t0 + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      o.connect(g); g.connect(c.destination);
+      o.start(t0); o.stop(t0 + dur + 0.05);
+    } catch (e) { /* audio not available */ }
+  }
+
+  function noise(dur, vol = 0.04, delay = 0) {
+    const c = ac();
+    if (!c) return;
+    try {
+      const len = Math.max(1, Math.floor(c.sampleRate * dur));
+      const buf = c.createBuffer(1, len, c.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+      const src = c.createBufferSource();
+      const g = c.createGain();
+      g.gain.value = vol;
+      src.buffer = buf;
+      src.connect(g); g.connect(c.destination);
+      src.start(c.currentTime + delay);
+    } catch (e) { /* noop */ }
+  }
+
+  const api = {
+    unlock() { ac(); },
+    click() { tone(660, .07, 'square', .03); },
+    key() { tone(1100 + Math.random() * 500, .045, 'square', .018); },
+    hover() { tone(880, .05, 'sine', .012); },
+    correct() { tone(523, .12, 'sine', .06); tone(659, .12, 'sine', .06, .1); tone(784, .2, 'sine', .07, .2); },
+    wrong() { tone(220, .22, 'sawtooth', .05); tone(180, .3, 'sawtooth', .04, .12); },
+    place() { tone(520, .08, 'triangle', .05); },
+    boot() { tone(392, .18, 'sine', .05); tone(523, .18, 'sine', .05, .16); tone(659, .3, 'sine', .06, .32); },
+    open() { tone(740, .09, 'sine', .04); tone(988, .12, 'sine', .04, .07); },
+    glitch() { noise(.25, .05); tone(90, .22, 'sawtooth', .04); tone(1400, .06, 'square', .02, .1); },
+    scan() { tone(1200, .05, 'sine', .02); },
+    scanTick() { tone(1300, .04, 'sine', .014); },
+    restore() {
+      tone(392, .2, 'sine', .06); tone(494, .2, 'sine', .06, .18);
+      tone(587, .2, 'sine', .06, .36); tone(784, .45, 'sine', .08, .54);
+    },
+    fanfare() {
+      const notes = [523, 659, 784, 1047];
+      notes.forEach((n, i) => tone(n, .28, 'triangle', .07, i * .13));
+      tone(1047, .6, 'sine', .06, .62);
+      noise(.4, .02, .1);
+    },
+  };
+  return api;
+})();
+
+window.Sfx = Sfx;
+
+</script>
+<script>
+/* ============================================================
+   LIBRARY RECOVERY — FX: CONFETTI & FIREWORKS (canvas)
+   ============================================================ */
+
+const Fx = (() => {
+  const canvas = document.getElementById('fx-canvas');
+  const ctx = canvas.getContext('2d');
+  let W = 0, H = 0, raf = 0, running = false;
+  let parts = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const COLORS = ['#c9803a', '#b07d2a', '#8a5a2c', '#a83c2a', '#5a7d43', '#e3b877', '#f6e7c6', '#fdf3dd'];
+
+  function spawnConfetti(n) {
+    for (let i = 0; i < n; i++) {
+      parts.push({
+        type: 'c',
+        x: Math.random() * W,
+        y: -12 - Math.random() * H * 0.4,
+        vx: (Math.random() - .5) * 1.8,
+        vy: 2 + Math.random() * 3.2,
+        w: 6 + Math.random() * 6,
+        h: 9 + Math.random() * 8,
+        rot: Math.random() * Math.PI * 2,
+        vr: (Math.random() - .5) * .22,
+        color: COLORS[(Math.random() * COLORS.length) | 0],
+        life: 1,
+        decay: 0.0022 + Math.random() * 0.0016,
+      });
+    }
+  }
+
+  function spawnFirework() {
+    const x = W * (0.2 + Math.random() * 0.6);
+    const y = H * (0.18 + Math.random() * 0.3);
+    const hue = COLORS[(Math.random() * COLORS.length) | 0];
+    const n = 34 + ((Math.random() * 22) | 0);
+    for (let i = 0; i < n; i++) {
+      const a = (Math.PI * 2 * i) / n;
+      const sp = 2 + Math.random() * 3.4;
+      parts.push({
+        type: 'f',
+        x, y,
+        vx: Math.cos(a) * sp,
+        vy: Math.sin(a) * sp,
+        r: 1.6 + Math.random() * 1.8,
+        color: Math.random() < .7 ? hue : COLORS[(Math.random() * COLORS.length) | 0],
+        life: 1,
+        decay: 0.012 + Math.random() * 0.01,
+      });
+    }
+  }
+
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalAlpha = 1;
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const p = parts[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.type === 'c') {
+        p.vy += 0.035; p.vx *= 0.99; p.rot += p.vr;
+        ctx.save();
+        ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      } else {
+        p.vx *= 0.985; p.vy = p.vy * 0.985 + 0.05;
+        p.life -= p.decay;
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = p.color;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+      }
+      p.life -= p.decay;
+      if (p.life <= 0 || p.y > H + 30) parts.splice(i, 1);
+    }
+    ctx.globalAlpha = 1;
+    if (running || parts.length) {
+      raf = requestAnimationFrame(loop);
+    } else {
+      raf = 0;
+      ctx.clearRect(0, 0, W, H);
+    }
+  }
+
+  const api = {
+    confetti(seconds = 6) {
+      resize();
+      running = true;
+      const total = seconds * 1000;
+      const t0 = performance.now();
+      const iv = setInterval(() => {
+        spawnConfetti(26);
+        if (performance.now() - t0 > total) clearInterval(iv);
+      }, 260);
+      if (!raf) raf = requestAnimationFrame(loop);
+      setTimeout(() => { running = false; }, total);
+    },
+    fireworkShow(seconds = 8) {
+      resize();
+      running = true;
+      const total = seconds * 1000;
+      const t0 = performance.now();
+      const iv = setInterval(() => {
+        spawnFirework();
+        if (performance.now() - t0 > total) clearInterval(iv);
+      }, 520);
+      if (!raf) raf = requestAnimationFrame(loop);
+      setTimeout(() => { running = false; }, total);
+    },
+    stop() { running = false; parts = []; },
+  };
+  return api;
+})();
+
+window.Fx = Fx;
+
+</script>
+<script>
+/* ============================================================
+   LIBRARY RECOVERY — DATA SOAL (17 SOAL)
+   Level 1: Decomposition (3) · Level 2: Pattern Recognition (4)
+   Level 3: Abstraction (5) · Level 4: Algorithm (4) · Final (1)
+   ============================================================ */
+
+const LEVELS = [
+  {
+    id: 1, name: 'DECOMPOSITION', sub: 'BREAK THE PROBLEM INTO SMALLER PARTS',
+    intro: 'Library system contains multiple problems.\nYour task: Break the main problem into smaller parts.',
+    concept: 'DECOMPOSITION = memecah masalah besar menjadi bagian-bagian kecil.',
+    window: 'PROCESS 01 — DECOMPOSITION',
+  },
+  {
+    id: 2, name: 'PATTERN RECOGNITION', sub: 'FIND WHAT REPEATS',
+    intro: 'Analyze the library transaction log.\nYour task: Find the repeating pattern.',
+    concept: 'PATTERN RECOGNITION = menemukan pola atau sesuatu yang berulang.',
+    window: '📊 LIBRARY TRANSACTION LOG',
+  },
+  {
+    id: 3, name: 'ABSTRACTION', sub: 'KEEP THE IMPORTANT DATA — IGNORE THE REST',
+    intro: 'Database contains too much information.\nYour task: Filter only the important data.',
+    concept: 'ABSTRACTION = mengambil informasi penting dan mengabaikan yang tidak diperlukan.',
+    window: '🗄 DATABASE — FILTER VIEW',
+  },
+  {
+    id: 4, name: 'ALGORITHM', sub: 'PUT THE STEPS IN THE CORRECT ORDER',
+    intro: '⚙ PROCESS BUILDER\nYour task: Arrange the steps into a working algorithm.',
+    concept: 'ALGORITHM = menyusun langkah penyelesaian masalah secara berurutan.',
+    window: '⚙ PROCESS BUILDER',
+  },
+  {
+    id: 5, name: 'FINAL ALGORITHM TEST', sub: 'REPAIR THE FINAL SEQUENCE',
+    intro: 'The recovery system cannot continue.\nYour task: Rearrange the final algorithm.',
+    concept: 'SUSUN ULANG ALGORITMA PEMINJAMAN BUKU.',
+    window: 'FINAL ALGORITHM TEST',
+  },
+];
+
+const QUESTIONS = [
+  /* ============ LEVEL 1 — DECOMPOSITION (3 soal) ============ */
+  {
+    id: 1, level: 1, type: 'multi',
+    kicker: 'SYSTEM PROBLEM',
+    text: '"Library borrowing system is not working."\nIdentify the components related to the problem.',
+    cards: ['DATA BUKU', 'DATA SISWA', 'PEMINJAMAN', 'PENGEMBALIAN', 'WARNA WEBSITE', 'MUSIK'],
+    answer: ['DATA BUKU', 'DATA SISWA', 'PEMINJAMAN', 'PENGEMBALIAN'],
+    feedback: ['> COMPONENTS IDENTIFIED.', 'DECOMPOSITION: 33%'],
+  },
+  {
+    id: 2, level: 1, type: 'multi',
+    kicker: 'DECOMPOSE FURTHER',
+    text: 'The problem becomes more specific.\n"Banyak siswa tidak dapat meminjam buku."\nBreak this problem into smaller parts.',
+    cards: ['A. Data siswa', 'B. Data buku', 'C. Ketersediaan buku', 'D. Sistem peminjaman', 'E. Warna website', 'F. Musik website'],
+    answer: ['A. Data siswa', 'B. Data buku', 'C. Ketersediaan buku', 'D. Sistem peminjaman'],
+    feedback: ['> PROBLEM SUCCESSFULLY DECOMPOSED.', 'DECOMPOSITION: 66%'],
+  },
+  {
+    id: 3, level: 1, type: 'multi',
+    kicker: 'CHECK THE PARTS',
+    text: '"Data peminjaman buku tidak tercatat."\nSelect the parts that should be checked.',
+    cards: ['DATA SISWA', 'DATA BUKU', 'TRANSAKSI PEMINJAMAN', 'WALLPAPER', 'MUSIK'],
+    answer: ['DATA SISWA', 'DATA BUKU', 'TRANSAKSI PEMINJAMAN'],
+    feedback: ['> DECOMPOSITION COMPLETE.', 'RECOVERY DATA: D-01'],
+  },
+
+  /* ============ LEVEL 2 — PATTERN RECOGNITION (4 soal) ============ */
+  {
+    id: 4, level: 2, type: 'mc',
+    kicker: 'TRANSACTION LOG',
+    text: 'Apa pola dari data tersebut?',
+    panel: { kind: 'log', lines: [
+      'MONDAY       <num>40</num>',
+      'TUESDAY      <num>55</num>',
+      'WEDNESDAY    <num>40</num>',
+      'THURSDAY     <num>55</num>',
+      'FRIDAY       <num>40</num>',
+    ] },
+    options: ['A. 40 → 55 → 40 → 55 → 40', 'B. 40 → 40 → 40', 'C. Selalu meningkat', 'D. Tidak ada pola'],
+    answer: 0,
+    feedback: ['> REPEATING PATTERN DETECTED.'],
+  },
+  {
+    id: 5, level: 2, type: 'mc',
+    kicker: 'BOOK ID REGISTRY',
+    text: 'Pola apa yang terlihat pada ID buku?',
+    panel: { kind: 'log', lines: ['BOOK ID', '<num>101</num>  <num>103</num>  <num>105</num>  <num>107</num>  <num>109</num>'] },
+    options: ['A. Bertambah 1', 'B. Bertambah 2', 'C. Berkurang 2', 'D. Tidak memiliki pola'],
+    answer: 1,
+    feedback: ['> ID PATTERN LOCKED.'],
+  },
+  {
+    id: 6, level: 2, type: 'mc',
+    kicker: 'SYSTEM LOG',
+    text: 'Apa pola yang terlihat?',
+    panel: { kind: 'log', lines: [
+      '<hl>LOGIN</hl>   <bad>ERROR</bad>',
+      '<hl>LOGIN</hl>   <bad>ERROR</bad>',
+      '<hl>LOGIN</hl>   <bad>ERROR</bad>',
+    ] },
+    options: ['A. LOGIN selalu muncul', 'B. ERROR selalu muncul', 'C. LOGIN dan ERROR muncul bergantian', 'D. Tidak ada pola'],
+    answer: 2,
+    feedback: ['> ALTERNATING PATTERN FOUND.'],
+  },
+  {
+    id: 7, level: 2, type: 'analyze',
+    kicker: 'BORROW HISTORY — 14/09/2026',
+    text: 'Apa yang terjadi pada jumlah buku yang dipinjam dan dikembalikan?',
+    analyzeLabel: '🔍 ANALYZE PATTERN',
+    panel: { kind: 'log', lines: [
+      '<dim>Hari       Dipinjam    Dikembalikan</dim>',
+      'Senin         <num>40</num>          <num>15</num>',
+      'Selasa        <num>55</num>          <num>20</num>',
+      'Rabu          <num>40</num>          <num>15</num>',
+      'Kamis         <num>55</num>          <num>20</num>',
+      'Jumat         <num>40</num>          <num>15</num>',
+    ] },
+    options: [
+      'A. Angkanya naik setiap hari.',
+      'B. Jumlah buku yang dikembalikan terlihat teratur.',
+      'C. Angkanya selalu sama setiap hari.',
+      'D. Tidak ada hubungan antara datanya.',
+    ],
+    answer: 1,
+    feedback: ['> REPEATING PATTERN DETECTED.', 'PATTERN RECOGNITION COMPLETE.', 'RECOVERY DATA: P-02'],
+  },
+
+  /* ============ LEVEL 3 — ABSTRACTION (5 soal) ============ */
+  {
+    id: 8, level: 3, type: 'fields',
+    kicker: 'DATABASE > STUDENTS',
+    text: 'Data apa yang diperlukan untuk mengetahui buku yang belum dikembalikan?\nKlik data yang penting.',
+    panel: { kind: 'dbcard', title: 'DATABASE > STUDENTS', fields: [
+      { key: 'Name', value: 'Baihaqi' },
+      { key: 'Class', value: 'X-A' },
+      { key: 'Student ID', value: '1027' },
+      { key: 'Hobby', value: 'Watching movies' },
+      { key: 'Height', value: '170 cm' },
+      { key: 'Book', value: 'Laskar Pelangi' },
+      { key: 'Status', value: 'NOT RETURNED' },
+    ] },
+    answer: ['Student ID', 'Book', 'Status'],
+    feedback: ['> IRRELEVANT DATA REMOVED.'],
+  },
+  {
+    id: 9, level: 3, type: 'mc',
+    kicker: 'DATABASE > BOOKS',
+    text: 'Jika ingin mencari buku karya Tere Liye, informasi apa yang paling penting?',
+    panel: { kind: 'table', table: 'books', cols: ['id', 'title', 'author', 'genre'] },
+    options: ['A. Judul dan Penulis', 'B. Warna sampul dan halaman', 'C. Genre dan halaman', 'D. ID dan warna sampul'],
+    answer: 0,
+    feedback: ['> KEY INFORMATION SELECTED.'],
+  },
+  {
+    id: 10, level: 3, type: 'mc',
+    kicker: 'DATABASE > BOOKS (FULL)',
+    text: 'Jika sistem ingin mengetahui buku mana yang masih bisa dipinjam, bagian mana yang paling penting diperhatikan?\n(Coba filter status di atas tabel.)',
+    panel: { kind: 'filter_table', table: 'books', cols: ['id', 'title', 'author', 'genre', 'pages', 'cover_color', 'status'] },
+    options: ['A. Judul buku dan Status buku', 'B. Warna sampul dan jumlah halaman', 'C. Nama penulis dan genre', 'D. ID buku dan warna sampul'],
+    answer: 0,
+    feedback: ['> AVAILABILITY FOCUS FOUND.'],
+  },
+  {
+    id: 11, level: 3, type: 'mc',
+    kicker: 'DATABASE > TRANSACTIONS',
+    text: 'Untuk menemukan siswa yang terlambat mengembalikan buku, informasi mana yang perlu diperhatikan?',
+    panel: { kind: 'table', table: 'transactions', cols: ['student_id', 'book', 'borrow_date', 'return_date', 'status', 'color'] },
+    options: ['A. Student ID dan Status', 'B. Warna dan tanggal pinjam', 'C. Judul dan warna', 'D. Warna dan tanggal kembali'],
+    answer: 0,
+    feedback: ['> LATE DETECTOR FIELDS FOUND.'],
+  },
+  {
+    id: 12, level: 3, type: 'fields',
+    kicker: 'ABSTRACTION FILTER',
+    text: 'Cari semua siswa yang masih memiliki buku yang belum dikembalikan.\nGunakan hanya informasi yang diperlukan.',
+    panel: { kind: 'dbcard', title: 'DATABASE > STUDENTS (RAW)', fields: [
+      { key: 'Student ID', value: '1027' },
+      { key: 'Name', value: 'Baihaqi' },
+      { key: 'Class', value: 'X-A' },
+      { key: 'Book', value: 'Laskar Pelangi' },
+      { key: 'Genre', value: 'Fiksi' },
+      { key: 'Borrow Date', value: '01/09/2026' },
+      { key: 'Status', value: 'NOT RETURNED' },
+      { key: 'Favorite Color', value: 'Blue' },
+      { key: 'Height', value: '170 cm' },
+      { key: 'Hobby', value: 'Watching movies' },
+    ] },
+    answer: ['Student ID', 'Name', 'Book', 'Status'],
+    feedback: ['> DATA FILTERED.', '> RELEVANT INFORMATION FOUND.', 'ABSTRACTION COMPLETE.', 'RECOVERY DATA: A-03'],
+  },
+
+  /* ============ LEVEL 4 — ALGORITHM (4 soal) ============ */
+  {
+    id: 13, level: 4, type: 'drag',
+    kicker: '⚙ PROCESS BUILDER',
+    text: 'Susun algoritma PEMINJAMAN buku yang benar.',
+    pool: ['SIMPAN TRANSAKSI', 'PILIH BUKU', 'INPUT DATA SISWA', 'CEK KETERSEDIAAN'],
+    order: ['PILIH BUKU', 'CEK KETERSEDIAAN', 'INPUT DATA SISWA', 'SIMPAN TRANSAKSI'],
+    feedback: ['> PROCESS VALID.'],
+  },
+  {
+    id: 14, level: 4, type: 'drag',
+    kicker: '⚙ PROCESS BUILDER',
+    text: 'Susun algoritma PENGEMBALIAN buku yang benar.',
+    pool: ['UPDATE STATUS BUKU', 'CARI DATA PEMINJAMAN', 'INPUT ID SISWA', 'KONFIRMASI PENGEMBALIAN'],
+    order: ['INPUT ID SISWA', 'CARI DATA PEMINJAMAN', 'KONFIRMASI PENGEMBALIAN', 'UPDATE STATUS BUKU'],
+    feedback: ['> RETURN ALGORITHM VALID.'],
+  },
+  {
+    id: 15, level: 4, type: 'drag',
+    kicker: '⚙ PROCESS BUILDER',
+    text: 'Susun algoritma SEARCH buku yang benar.',
+    pool: ['TAMPILKAN HASIL', 'BUKA LIBRARY APP', 'MASUKKAN JUDUL', 'SEARCH DATABASE'],
+    order: ['BUKA LIBRARY APP', 'MASUKKAN JUDUL', 'SEARCH DATABASE', 'TAMPILKAN HASIL'],
+    feedback: ['> SEARCH ALGORITHM VALID.'],
+  },
+  {
+    id: 16, level: 4, type: 'sort',
+    kicker: '⚙ PROCESS BUILDER — SORTING',
+    text: 'Urutkan ID buku dari yang TERKECIL ke TERBESAR.\nKlik kartu sesuai urutan yang benar.',
+    pool: [109, 101, 105, 103, 107],
+    order: [101, 103, 105, 107, 109],
+    feedback: ['> DATABASE SORTED.', '> ALGORITHM COMPLETE.'],
+  },
+
+  /* ============ FINAL TERMINAL (1 soal) ============ */
+  {
+    id: 17, level: 5, type: 'drag',
+    kicker: 'FINAL ALGORITHM TEST',
+    text: 'The recovery system cannot continue.\nRearrange the algorithm.',
+    wrongShown: ['Simpan transaksi', 'Pilih buku', 'Cek ketersediaan', 'Input siswa'],
+    pool: ['SIMPAN TRANSAKSI', 'PILIH BUKU', 'CEK KETERSEDIAAN', 'INPUT SISWA'],
+    order: ['PILIH BUKU', 'CEK KETERSEDIAAN', 'INPUT SISWA', 'SIMPAN TRANSAKSI'],
+    feedback: ['> ALGORITHM VALID.', '> FINAL RECOVERY SEQUENCE ACCEPTED.'],
+  },
+];
+
+window.LEVELS = LEVELS;
+window.QUESTIONS = QUESTIONS;
+
+</script>
+<script>
+/* ============================================================
+   LIBRARY RECOVERY — GAME CONTROLLER
+   ============================================================ */
+
+(() => {
+  'use strict';
+
+  const $ = (s, el) => (el || document).querySelector(s);
+  const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
+
+  const TOTAL = 17;
+
+  const state = {
+    started: false,
+    solved: 0,
+    perLevelIndex: {},
+    levelStatus: { 1: 'locked', 2: 'locked', 3: 'locked', 4: 'locked', 5: 'locked' },
+    analyzeShown: false,
+    countdownLeft: 20 * 60,
+    countdownTimer: null,
+    termEnabled: false,
+    scanning: false,
+    answered: false,
+    solvedIds: new Set(),
+    finished: false,
+  };
+
+  // ---------- elements ----------
+  const deskScene = $('#desk-scene');
+  const computerScene = $('#computer-scene');
+  const monitor = $('#monitor');
+  const bootScreen = $('#boot-screen');
+  const desktopScreen = $('#desktop-screen');
+  const terminalWindow = $('#terminal-window');
+  const termOut = $('#terminal-output');
+  const termInput = $('#terminal-input');
+  const termHint = $('#term-hint');
+  const gameWindow = $('#game-window');
+  const gameBody = $('#game-body');
+  const levelTitle = $('#level-title');
+  const glitchOverlay = $('#glitch-overlay');
+  const bezelStatus = $('#bezel-status');
+  const bezelStatusDot = $('.bezel-status-dot');
+
+  // ============================================================
+  // UTIL
+  // ============================================================
+  const timers = [];
+  function wait(ms) { return new Promise(r => timers.push(setTimeout(r, ms))); }
+
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function playGlitch(times) {
+    const n = times || 1;
+    for (let i = 0; i < n; i++) {
+      timers.push(setTimeout(() => {
+        glitchOverlay.classList.remove('on');
+        void glitchOverlay.offsetWidth;
+        glitchOverlay.classList.add('on');
+        Sfx.glitch();
+      }, i * 700));
+    }
+  }
+
+  function setBezel(text, ok) {
+    bezelStatus.textContent = text;
+    bezelStatus.className = 'bezel-status' + (ok ? ' ok' : '');
+    if (bezelStatusDot) bezelStatusDot.classList.toggle('ok', !!ok);
+  }
+
+  function startClocks() {
+    const bc = $('#bezel-clock');
+    const tc = $('#taskbar-clock');
+    const tick = () => {
+      const t = new Date().toTimeString().slice(0, 5);
+      bc.textContent = t;
+      tc.textContent = t;
+    };
+    tick();
+    timers.push(setInterval(tick, 15000));
+  }
+
+  // ============================================================
+  // WINDOWS
+  // ============================================================
+  const openList = [];
+  const WIN_META = {
+    'error-window': { icon: '⚠', label: 'Library System' },
+    'terminal-window': { icon: '💻', label: 'Terminal' },
+    'game-window': { icon: '⚙', label: 'Recovery' },
+    'database-window': { icon: '📊', label: 'Database' },
+    'recovery-window': { icon: '🛠', label: 'Restore' },
+    'notes-window': { icon: '📝', label: 'Notes' },
+    'files-window': { icon: '📁', label: 'Files' },
+  };
+  const WIN_ORDER = ['error-window', 'terminal-window', 'game-window', 'database-window', 'recovery-window', 'notes-window', 'files-window'];
+
+  function syncTaskbar() {
+    const items = $('#taskbar-items');
+    items.innerHTML = '';
+    for (const id of WIN_ORDER) {
+      if (openList.indexOf(id) === -1) continue;
+      const m = WIN_META[id];
+      const el = document.createElement('div');
+      el.className = 'tb-item' + (minimizedSet.has(id) ? ' minimized' : ' active');
+      el.title = m.label;
+      el.innerHTML = '<span>' + m.icon + '</span><span>' + m.label + '</span>';
+      el.onclick = () => {
+        Sfx.click();
+        if (minimizedSet.has(id)) { restoreWindow(id); return; }
+        if (focusedId === id) { minimizeWindow(id); return; }
+        focusWindow(id);
+      };
+      items.appendChild(el);
+    }
+  }
+
+  let focusedId = null;
+  let maximizedId = null;
+  const minimizedSet = new Set();
+
+  // how to (re)open each window — used by taskbar restore & desktop icons (anti soft-lock)
+  const winOpeners = {
+    'error-window': () => openWindow('error-window', { width: 560 }),
+    'terminal-window': () => { openWindow('terminal-window', { width: 640 }); },
+    'game-window': () => {
+      const lvl = activeGameLevel();
+      const L = LEVELS.find(l => l.id === lvl);
+      openWindow('game-window', { width: 640, title: L ? L.window : 'RECOVERY', badge: L ? 'LEVEL 0' + lvl : 'RECOVERY' });
+      renderQuestionForLevel(lvl);
+    },
+    'database-window': () => { openWindow('database-window', { width: 680 }); renderDatabaseApp(); },
+    'recovery-window': () => openWindow('recovery-window', { width: 640 }),
+    'notes-window': () => openWindow('notes-window', { width: 420 }),
+    'files-window': () => openWindow('files-window', { width: 420 }),
+  };
+
+  function activeGameLevel() {
+    for (let l = 1; l <= 5; l++) if (state.levelStatus[l] === 'active') return l;
+    let last = 1;
+    for (let l = 1; l <= 5; l++) if (state.levelStatus[l] === 'done') last = l;
+    return last;
+  }
+
+  function openWindow(id, opts) {
+    const o = opts || {};
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (o.width) el.style.width = 'min(' + o.width + 'px, calc(100vw - 24px))';
+    if (o.title) $('.os-window-title', el).textContent = o.title;
+    const badge = $('.os-window-badge', el);
+    if (badge && o.badge) badge.textContent = o.badge;
+    // letakkan window ini paling depan (di atas semua window lain yang sedang terbuka)
+    const otherZ = $$('.os-window')
+      .filter(w => w !== el && !w.classList.contains('hidden') && !w.classList.contains('minimized'))
+      .reduce((max, w) => Math.max(max, parseInt(w.style.zIndex, 10) || 20), 20);
+    el.style.zIndex = otherZ + 1;
+    if (maximizedId === id) unmaximizeWindow(el);
+    minimizedSet.delete(id);
+    el.classList.remove('minimized');
+    el.classList.remove('hidden');
+    requestAnimationFrame(() => el.classList.add('show'));
+    focusedId = id;
+    if (openList.indexOf(id) === -1) openList.push(id);
+    Sfx.open();
+    syncTaskbar();
+  }
+
+  function minimizeWindow(id) {
+    const el = document.getElementById(id);
+    if (!el || !el.classList.contains('show') || el.classList.contains('minimized')) return;
+    if (maximizedId === id) unmaximizeWindow(el);
+    el.classList.remove('show');
+    el.classList.add('minimized');
+    minimizedSet.add(id);
+    if (focusedId === id) focusedId = null;
+    Sfx.click();
+    syncTaskbar();
+  }
+
+  function restoreWindow(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('minimized');
+    minimizedSet.delete(id);
+    el.classList.remove('hidden');
+    requestAnimationFrame(() => el.classList.add('show'));
+    focusWindow(id);
+    Sfx.open();
+    if (id === 'terminal-window' && state.termEnabled) focusTerm();
+    syncTaskbar();
+  }
+
+  function toggleMaximize(id) {
+    const el = document.getElementById(id);
+    if (!el || !el.classList.contains('show') || el.classList.contains('minimized')) return;
+    if (el.classList.contains('maximized')) {
+      unmaximizeWindow(el);
+      Sfx.place();
+    } else {
+      if (maximizedId && maximizedId !== id) unmaximizeWindow(document.getElementById(maximizedId));
+      el._preMaxWidth = el.style.width;
+      el.style.width = 'calc(100% - 20px)';
+      el.classList.add('maximized');
+      maximizedId = id;
+      Sfx.place();
+    }
+    focusWindow(id);
+  }
+
+  function unmaximizeWindow(el) {
+    if (!el) return;
+    if (el.classList.contains('maximized')) {
+      el.classList.remove('maximized');
+      el.style.width = el._preMaxWidth != null ? el._preMaxWidth : '';
+    }
+    if (maximizedId === el.id) maximizedId = null;
+  }
+
+  function closeWindow(id) {
+    const el = document.getElementById(id);
+    if (!el || el.classList.contains('hidden')) return;
+    if (maximizedId === id) maximizedId = null;
+    minimizedSet.delete(id);
+    el.classList.remove('show');
+    el.classList.remove('minimized');
+    timers.push(setTimeout(() => { if (!el.classList.contains('show')) el.classList.add('hidden'); }, 240));
+    const i = openList.indexOf(id);
+    if (i >= 0) openList.splice(i, 1);
+    if (focusedId === id) focusedId = null;
+    Sfx.click();
+    syncTaskbar();
+  }
+
+  function focusWindow(id) {
+    $$('.os-window').forEach(w => { w.style.zIndex = 20; });
+    const el = document.getElementById(id);
+    if (el) el.style.zIndex = 30;
+    focusedId = id;
+    syncTaskbar();
+  }
+
+  function isShown(id) {
+    const el = document.getElementById(id);
+    return !!el && el.classList.contains('show') && !el.classList.contains('hidden') && !el.classList.contains('minimized');
+  }
+
+  // ============================================================
+  // DESKTOP
+  // ============================================================
+  const ICONS = [
+    { id: 'library', icon: '📚', label: 'Library System' },
+    { id: 'database', icon: '🗄', label: 'Database' },
+    { id: 'terminal', icon: '💻', label: 'Terminal' },
+    { id: 'files', icon: '📁', label: 'Files' },
+    { id: 'notes', icon: '📝', label: 'Notes' },
+  ];
+
+  function buildDesktop() {
+    const wrap = $('#desktop-icons');
+    wrap.innerHTML = '';
+    ICONS.forEach(it => {
+      const d = document.createElement('div');
+      d.className = 'd-icon';
+      d.innerHTML = '<span class="ic">' + it.icon + '</span><span class="lb">' + it.label + '</span>';
+      d.onclick = () => { Sfx.click(); openApp(it.id); };
+      d.onmouseenter = () => Sfx.hover();
+      wrap.appendChild(d);
+    });
+    $('#desktop-hint').textContent = '> CLICK [ LIBRARY SYSTEM ] TO CONTINUE';
+  }
+
+  function openApp(id) {
+    if (id === 'library') {
+      // after the game has started, the Library System icon points to the active Recovery window
+      if (state.levelStatus[1] !== 'locked') winOpeners['game-window']();
+      else openWindow('error-window', { width: 560 });
+    }
+    else if (id === 'terminal') openTerminalIntro();
+    else if (id === 'database') winOpeners['database-window']();
+    else if (id === 'files') openWindow('files-window', { width: 420 });
+    else if (id === 'notes') openWindow('notes-window', { width: 420 });
+  }
+
+  // ============================================================
+  // PHASE 1: DESK → ZOOM → BOOT
+  // ============================================================
+  async function startGame() {
+    if (state.started) return;
+    state.started = true;
+    Sfx.unlock();
+    Sfx.open();
+    deskScene.classList.add('zooming');
+    await wait(1500);
+    computerScene.classList.remove('hidden-scene');
+    deskScene.classList.add('hidden-scene');
+    await wait(350);
+    runBoot();
+  }
+
+  async function runBoot() {
+    bootScreen.classList.remove('hidden');
+    setBezel('BOOTING', false);
+    Sfx.boot();
+    const status = $('#boot-status');
+    const fill = $('.boot-bar-fill', bootScreen);
+    const steps = ['BOOTING...', 'Loading Library Management System...', 'Mounting library.db ...', 'Checking recovery tools...'];
+    for (let i = 0; i < steps.length; i++) {
+      status.textContent = steps[i];
+      fill.style.width = Math.round(((i + 1) / steps.length) * 100) + '%';
+      Sfx.scanTick();
+      await wait(i === 1 ? 950 : 600);
+    }
+    await wait(350);
+    bootScreen.classList.add('hidden');
+    showDesktop();
+  }
+
+  async function showDesktop() {
+    desktopScreen.classList.remove('hidden');
+    buildDesktop();
+    syncTaskbar();
+    await wait(900);
+    openApp('library');
+    playGlitch(2);
+    setBezel('ERROR', false);
+    startCountdown();
+  }
+
+  function startCountdown() {
+    if (state.countdownTimer) return;
+    const el = $('#error-countdown');
+    state.countdownTimer = setInterval(() => {
+      state.countdownLeft = Math.max(0, state.countdownLeft - 1);
+      const m = String(Math.floor(state.countdownLeft / 60)).padStart(2, '0');
+      const s = String(state.countdownLeft % 60).padStart(2, '0');
+      if (el) el.textContent = state.countdownLeft === 0
+        ? 'SYSTEM LOCKDOWN IMMINENT'
+        : 'SYSTEM LOCKDOWN IN: ' + m + ':' + s;
+      if (state.countdownLeft === 0) {
+        clearInterval(state.countdownTimer); state.countdownTimer = null;
+        playGlitch(2);
+      }
+    }, 1000);
+  }
+  // ============================================================
+  // PROGRESS
+  // ============================================================
+  function updateProgress() {
+    $('#gp-fill').style.width = Math.round((state.solved / TOTAL) * 100) + '%';
+    $('#gp-count').textContent = state.solved + ' / ' + TOTAL;
+    renderLevelChips();
+  }
+
+  function renderLevelChips() {
+    const wrap = $('#game-levels');
+    const st = state.levelStatus;
+    wrap.innerHTML = '';
+    [1, 2, 3, 4, 5].forEach(n => {
+      const chip = document.createElement('div');
+      const cls = st[n] === 'done' ? 'done' : st[n] === 'active' ? 'now' : 'locked';
+      chip.className = 'lv-chip ' + cls;
+      const sym = st[n] === 'done' ? '✓' : st[n] === 'active' ? '…' : '🔒';
+      const name = n === 5 ? 'FINAL' : 'LEVEL 0' + n;
+      chip.innerHTML = name + ' <b>' + sym + '</b>';
+      wrap.appendChild(chip);
+    });
+  }
+
+  function questionNumber(q) {
+    return QUESTIONS.indexOf(q) + 1;
+  }
+
+  // ============================================================
+  // LEVEL TITLE CINEMATIC
+  // ============================================================
+  function showLevelTitle(level, cb) {
+    const L = LEVELS.find(l => l.id === level);
+    $('#lt-level').textContent = 'LEVEL 0' + level;
+    $('#lt-name').textContent = L.name;
+    $('#lt-sub').textContent = L.sub;
+    levelTitle.classList.remove('hidden');
+    const inner = $('.lt-inner', levelTitle);
+    const fresh = inner.cloneNode(true);
+    inner.parentNode.replaceChild(fresh, inner);
+    Sfx.open();
+    timers.push(setTimeout(() => {
+      levelTitle.classList.add('hidden');
+      cb();
+    }, 2650));
+  }
+
+  function startLevel(level) {
+    state.levelStatus[level] = 'active';
+    renderLevelChips();
+    showLevelTitle(level, () => {
+      const L = LEVELS.find(l => l.id === level);
+      openWindow('game-window', { width: 640, title: L.window, badge: 'LEVEL 0' + level });
+      renderQuestionForLevel(level);
+    });
+  }
+
+  function renderQuestionForLevel(level) {
+    const qs = QUESTIONS.filter(q => q.level === level);
+    const idx = state.perLevelIndex[level] || 0;
+    renderQuestion(qs[Math.min(idx, qs.length - 1)]);
+  }
+
+  // ============================================================
+  // RENDER QUESTION
+  // ============================================================
+  function renderQuestion(q) {
+    state.current = q;
+    state.answered = false;
+    gameBody.scrollTop = 0;
+    const tag = 'SOAL ' + questionNumber(q) + ' / 17';
+
+    let panelHtml = '';
+    if (q.panel) {
+      if (q.panel.kind === 'log') {
+        panelHtml = '<div class="log-panel">' + q.panel.lines.map(l => '<div>' + l + '</div>').join('') + '</div>';
+      } else if (q.panel.kind === 'dbcard') {
+        panelHtml =
+          '<div class="log-panel" style="padding:14px 16px">' +
+          '<div class="q-kicker" style="margin-bottom:10px">' + esc(q.panel.title) + '</div>' +
+          '<div class="db-profile">' +
+          q.panel.fields.map(f =>
+            '<button class="db-field" data-key="' + esc(f.key) + '"><b>' + esc(f.key) + '</b>' + esc(f.value) + '</button>'
+          ).join('') +
+          '</div></div>';
+      } else if (q.panel.kind === 'table') {
+        panelHtml = SQL.renderTable(q.panel.table, q.panel.cols);
+      } else if (q.panel.kind === 'filter_table') {
+        panelHtml =
+          '<div class="filter-row"><span class="q-tag">FILTER STATUS</span>' +
+          '<button class="filter-chip on" data-f="ALL">ALL</button>' +
+          '<button class="filter-chip" data-f="Tersedia">TERSEDIA</button>' +
+          '<button class="filter-chip" data-f="Dipinjam">DIPINJAM</button></div>' +
+          '<div id="q-table">' + SQL.renderTable(q.panel.table, q.panel.cols) + '</div>';
+      }
+    }
+
+    let bodyHtml = '';
+    if (q.type === 'multi') {
+      bodyHtml =
+        '<div class="cards-grid" id="q-cards">' +
+        q.cards.map(c => '<button class="card-opt">' + esc(c) + '</button>').join('') +
+        '</div>' +
+        '<div class="q-actions"><button class="btn btn-primary" id="q-check">CHECK ANSWER</button></div>';
+    } else if (q.type === 'mc' || q.type === 'analyze') {
+      const showOpts = !(q.type === 'analyze' && !state.analyzeShown);
+      const opts = showOpts
+        ? '<div class="mc-list">' + q.options.map((o, i) =>
+            '<button class="mc-opt" data-i="' + i + '"><span class="key">' + o.slice(0, 1) + '</span><span>' + esc(o.slice(3)) + '</span></button>'
+          ).join('') + '</div>'
+        : '<div class="mc-list"></div>';
+      const analyzeBtn = (q.type === 'analyze' && !state.analyzeShown)
+        ? '<div class="q-actions"><button class="btn btn-primary" id="q-analyze">' + (q.analyzeLabel || 'ANALYZE') + '</button></div>'
+        : '';
+      bodyHtml = analyzeBtn + opts;
+    } else if (q.type === 'fields') {
+      bodyHtml =
+        '<div class="q-sub">Klik semua data yang PENTING. Data tidak relevan dibiarkan.</div>' +
+        '<div class="q-actions"><button class="btn btn-primary" id="q-check">APPLY FILTER</button>' +
+        '<button class="btn btn-ghost" id="q-reset">RESET</button></div>';
+    } else if (q.type === 'drag' || q.type === 'sort') {
+      const hintText = q.type === 'sort'
+        ? 'Klik kartu angka sesuai urutan dari terkecil ke terbesar.'
+        : 'Drag kartu ke slot 1-4. Di layar sentuh: tap kartu, lalu tap slot.';
+      bodyHtml =
+        '<div class="q-sub">' + hintText + '</div>' +
+        '<div class="dd-slots" id="q-slots"></div>' +
+        '<div class="dd-pool" id="q-pool"></div>' +
+        '<div class="q-actions"><button class="btn btn-primary" id="q-check">' +
+        (q.type === 'sort' ? 'CHECK ORDER' : 'RUN PROCESS') + '</button>' +
+        '<button class="btn btn-ghost" id="q-reset">RESET</button></div>';
+    }
+
+    gameBody.innerHTML =
+      '<div class="q-meta"><span class="q-tag">' + tag + '</span></div>' +
+      '<div><div class="q-kicker">' + esc(q.kicker) + '</div>' +
+      '<div class="q-text" style="white-space:pre-wrap">' + esc(q.text) + '</div></div>' +
+      panelHtml +
+      '<div id="q-answer-area">' + bodyHtml + '</div>' +
+      '<div id="q-feedback"></div>';
+
+    if (q.panel && q.panel.kind === 'filter_table') bindFilterChips(q);
+    bindQuestionEvents(q);
+  }
+
+  function bindFilterChips(q) {
+    // chip filter ada di panel (di luar #q-answer-area) — cari di gameBody
+    $$('.filter-chip', gameBody).forEach(chip => {
+      chip.onclick = () => {
+        $$('.filter-chip', gameBody).forEach(c => c.classList.remove('on'));
+        chip.classList.add('on');
+        const f = chip.dataset.f;
+        const html = SQL.renderTable(q.panel.table, q.panel.cols, {
+          rowFilter: f === 'ALL' ? null : (r => r.status === f),
+        });
+        $('#q-table').innerHTML = html;
+        Sfx.click();
+      };
+    });
+  }
+
+  function showFeedback(q, ok) {
+    const fb = $('#q-feedback');
+    if (ok) {
+      const lines = q.feedback.map(l => '<span>' + esc(l) + '</span>').join('<span style="opacity:.4">·</span>');
+      fb.innerHTML = '<div class="fb ok"><span>✓ CORRECT</span>' + lines + '</div>';
+    } else {
+      fb.innerHTML = '<div class="fb no"><span>✕ INCORRECT</span><span>Think about the problem again.</span></div>';
+    }
+  }
+
+  function finishQuestion(q) {
+    state.answered = true;
+    // main ulang soal yang sudah selesai tidak menaikkan skor (maks 17/17)
+    const firstTime = !state.solvedIds.has(q.id);
+    state.solvedIds.add(q.id);
+    if (firstTime) { state.solved += 1; updateProgress(); }
+    const num = questionNumber(q);
+    termPrint('C:\\SMAN6_LIBRARY> challenge_' + num, 'dim');
+    termPrint('> CHALLENGE ' + num + ' / 17 COMPLETE', 'ok');
+    advance(q);
+  }
+
+  // ============================================================
+  // QUESTION EVENTS
+  // ============================================================
+  function bindQuestionEvents(q) {
+    const area = $('#q-answer-area');
+    const checkGuard = () => state.answered;
+
+    if (q.type === 'multi') {
+      $$('#q-cards .card-opt').forEach(btn => {
+        btn.onclick = () => { btn.classList.toggle('sel'); Sfx.click(); };
+        btn.onmouseenter = () => Sfx.hover();
+      });
+      $('#q-check').onclick = () => {
+        if (checkGuard()) return;
+        const chosen = $$('#q-cards .card-opt.sel').map(b => b.textContent);
+        const ok = chosen.length === q.answer.length && q.answer.every(a => chosen.indexOf(a) >= 0);
+        if (ok) {
+          $$('#q-cards .card-opt').forEach(b => {
+            b.classList.remove('sel');
+            b.classList.add(q.answer.indexOf(b.textContent) >= 0 ? 'correct' : 'disabled');
+          });
+          Sfx.correct();
+          showFeedback(q, true);
+          finishQuestion(q);
+        } else {
+          Sfx.wrong();
+          $$('#q-cards .card-opt.sel').forEach(b => { b.classList.add('wrong'); b.classList.remove('sel'); });
+          showFeedback(q, false);
+          timers.push(setTimeout(() => $$('#q-cards .card-opt.wrong').forEach(b => b.classList.remove('wrong')), 600));
+        }
+      };
+    }
+
+    if (q.type === 'mc' || q.type === 'analyze') {
+      const bindOpts = () => {
+        $$('#q-answer-area .mc-opt').forEach(btn => {
+          btn.onclick = () => {
+            if (btn.classList.contains('disabled')) return;
+            const i = Number(btn.dataset.i);
+            if (i === q.answer) {
+              $$('#q-answer-area .mc-opt').forEach(b => { b.classList.add('disabled'); b.classList.remove('wrong'); });
+              btn.classList.add('correct');
+              Sfx.correct();
+              showFeedback(q, true);
+              finishQuestion(q);
+            } else {
+              btn.classList.add('wrong');
+              Sfx.wrong();
+              showFeedback(q, false);
+              timers.push(setTimeout(() => btn.classList.remove('wrong'), 500));
+            }
+          };
+          btn.onmouseenter = () => Sfx.hover();
+        });
+      };
+      const analyzeBtn = $('#q-analyze');
+      if (analyzeBtn) {
+        analyzeBtn.onclick = () => {
+          state.analyzeShown = true;
+          Sfx.scan();
+          analyzeBtn.parentNode.remove();
+          $('.mc-list', area).innerHTML = q.options.map((o, i) =>
+            '<button class="mc-opt" data-i="' + i + '"><span class="key">' + o.slice(0, 1) + '</span><span>' + esc(o.slice(3)) + '</span></button>'
+          ).join('');
+          bindOpts();
+        };
+      } else {
+        bindOpts();
+      }
+    }
+
+    if (q.type === 'fields') {
+      $$('.db-field').forEach(f => {
+        f.onclick = () => { f.classList.toggle('sel'); Sfx.click(); };
+        f.onmouseenter = () => Sfx.hover();
+      });
+      $('#q-reset').onclick = () => { $$('.db-field').forEach(f => f.classList.remove('sel')); Sfx.click(); };
+      $('#q-check').onclick = () => {
+        if (checkGuard()) return;
+        const chosen = $$('.db-field.sel').map(f => f.dataset.key);
+        const ok = chosen.length === q.answer.length && q.answer.every(a => chosen.indexOf(a) >= 0);
+        if (ok) {
+          $$('.db-field').forEach(f => {
+            f.classList.remove('sel');
+            f.classList.add(q.answer.indexOf(f.dataset.key) >= 0 ? 'correct' : 'wrong');
+          });
+          Sfx.correct();
+          showFeedback(q, true);
+          finishQuestion(q);
+        } else {
+          $$('.db-field.sel').forEach(f => { f.classList.add('wrong'); f.classList.remove('sel'); });
+          Sfx.wrong();
+          showFeedback(q, false);
+          timers.push(setTimeout(() => $$('.db-field.wrong').forEach(f => f.classList.remove('wrong')), 600));
+        }
+      };
+    }
+
+    if (q.type === 'drag' || q.type === 'sort') {
+      const slotsEl = $('#q-slots');
+      const poolEl = $('#q-pool');
+      const nSlots = q.type === 'sort' ? q.pool.length : 4;
+      slotsEl.innerHTML = '';
+      for (let i = 0; i < nSlots; i++) {
+        const s = document.createElement('div');
+        s.className = 'dd-slot';
+        s.dataset.pos = String(i);
+        s.innerHTML = '<span class="slot-num">' + (i + 1) + '</span><span class="slot-card"></span>';
+        slotsEl.appendChild(s);
+      }
+
+      const shuffled = q.pool.slice().sort(() => Math.random() - 0.5);
+      let dragVal = null;
+      let tapVal = null;
+
+      const makeChip = (val) => {
+        const chip = document.createElement('span');
+        chip.className = 'dd-chip';
+        chip.dataset.value = String(val);
+        chip.textContent = String(val);
+        chip.draggable = true;
+        chip.addEventListener('dragstart', e => {
+          dragVal = chip.dataset.value;
+          chip.classList.add('dragging');
+          if (e.dataTransfer) e.dataTransfer.setData('text/plain', chip.dataset.value);
+        });
+        chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+        chip.onclick = () => {
+          if (tapVal === chip.dataset.value) { tapVal = null; chip.classList.remove('sel'); return; }
+          $$('.dd-chip.sel').forEach(c => c.classList.remove('sel'));
+          tapVal = chip.dataset.value;
+          chip.classList.add('sel');
+          Sfx.click();
+        };
+        poolEl.appendChild(chip);
+      };
+
+      shuffled.forEach(makeChip);
+
+      $$('.dd-slot').forEach(slot => {
+        slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('over'); });
+        slot.addEventListener('dragleave', () => slot.classList.remove('over'));
+        slot.addEventListener('drop', e => {
+          e.preventDefault();
+          slot.classList.remove('over');
+          const val = dragVal || (e.dataTransfer ? e.dataTransfer.getData('text/plain') : '');
+          if (!val) return;
+          placeInSlot(slot, val);
+          dragVal = null;
+        });
+        slot.addEventListener('click', () => {
+          if (tapVal == null) return;
+          placeInSlot(slot, tapVal);
+          $$('.dd-chip.sel').forEach(c => c.classList.remove('sel'));
+          tapVal = null;
+        });
+      });
+
+      function placeInSlot(slot, val) {
+        if (slot.dataset.value) restorePool(slot.dataset.value);
+        const chip = poolEl.querySelector('.dd-chip[data-value="' + CSS.escape(val) + '"]');
+        if (chip) chip.remove();
+        slot.dataset.value = val;
+        slot.classList.add('locked');
+        // chip di slot tetap interaktif (klik = angkat kembali ke pool)
+        slot.querySelector('.slot-card').innerHTML =
+          '<span class="dd-chip placed" data-value="' + esc(val) + '" title="Klik untuk mengeluarkan">' + esc(val) + '</span>';
+        slot.querySelector('.slot-card .dd-chip').onclick = () => {
+          tapVal = null;
+          $$('.dd-chip.sel').forEach(c => c.classList.remove('sel'));
+          restorePool(val);
+          Sfx.click();
+        };
+        Sfx.place();
+      }
+      function restorePool(val) {
+        slotClear(slotOf(val));
+        makeChip(val);
+      }
+      function slotOf(val) {
+        return $$('.dd-slot').find(s => s.dataset.value === val);
+      }
+      function slotClear(slot) {
+        if (!slot) return;
+        delete slot.dataset.value;
+        slot.classList.remove('locked');
+        slot.querySelector('.slot-card').innerHTML = '';
+      }
+
+      $('#q-reset').onclick = () => { Sfx.click(); renderQuestion(q); };
+      $('#q-check').onclick = () => {
+        if (checkGuard()) return;
+        const placed = $$('.dd-slot').map(s => s.dataset.value || null);
+        const needed = q.order.map(String);
+        const ok = placed.every((v, i) => v !== null && v === needed[i]);
+        if (ok) {
+          $$('.dd-chip').forEach(c => c.classList.add('correct'));
+          Sfx.correct();
+          showFeedback(q, true);
+          finishQuestion(q);
+        } else {
+          Sfx.wrong();
+          showFeedback(q, false);
+          $$('.dd-slot').forEach((s, i) => {
+            const chip = $('.slot-card .dd-chip', s);
+            if (!chip) return;
+            const good = s.dataset.value === needed[i];
+            chip.classList.toggle('correct', good);
+            chip.classList.toggle('wrong', !good);
+          });
+          timers.push(setTimeout(() => {
+            $$('.dd-chip').forEach(c => c.classList.remove('wrong'));
+          }, 900));
+        }
+      };
+    }
+  }
+
+  // ============================================================
+  // ADVANCE
+  // ============================================================
+  function advance(q) {
+    timers.push(setTimeout(() => {
+      const qs = QUESTIONS.filter(x => x.level === q.level);
+      const idx = qs.indexOf(q);
+      if (idx < qs.length - 1) {
+        state.perLevelIndex[q.level] = idx + 1;
+        renderQuestionForLevel(q.level);
+        return;
+      }
+      state.levelStatus[q.level] = 'done';
+      updateProgress();
+      if (q.level === 1 || q.level === 2 || q.level === 3) {
+        startLevel(q.level + 1);
+      } else if (q.level === 4) {
+        closeWindow('game-window');
+        finalTerminal();
+      } else {
+        closeWindow('game-window');
+        // replay soal final setelah game selesai tidak mengulang sekuens recovery
+        if (!state.finished) runRecovery();
+      }
+    }, 1900));
+  }
+
+  // ============================================================
+  // TERMINAL
+  // ============================================================
+  function termPrint(html, cls) {
+    const div = document.createElement('div');
+    div.className = 't-line' + (cls ? ' ' + cls : '');
+    div.innerHTML = html;
+    termOut.appendChild(div);
+    termOut.scrollTop = termOut.scrollHeight;
+  }
+
+  async function typeLine(text, cls) {
+    const div = document.createElement('div');
+    div.className = 't-line' + (cls ? ' ' + cls : '');
+    termOut.appendChild(div);
+    for (const ch of text) {
+      div.textContent += ch;
+      termOut.scrollTop = termOut.scrollHeight;
+      if (ch !== ' ') Sfx.key();
+      await wait(14);
+    }
+  }
+
+  function setTermEnabled(on, hintHtml) {
+    state.termEnabled = on;
+    $('#terminal-input-line').classList.toggle('hidden', !on);
+    termHint.classList.toggle('hidden', !on);
+    if (on && hintHtml) termHint.innerHTML = hintHtml;
+    if (on) focusTerm();
+  }
+
+  function focusTerm() {
+    const c = $('#term-input-catcher');
+    if (c) c.focus({ preventScroll: true });
+  }
+
+  function resetTerminal() {
+    termOut.innerHTML = '';
+    termInput.textContent = '';
+    // buang tombol [ START ] basi dari sesi scan sebelumnya
+    $$('.terminal-body .btn-primary', terminalWindow).forEach(b => b.remove());
+  }
+
+  // satu pintu untuk perintah `recovery` (dipakai catcher mobile & keyboard fisik)
+  function handleRecoveryCmd(cmd) {
+    if (state.scanning) return; // scan sedang berjalan → abaikan duplikat
+    // setelah game mulai, `recovery` tidak scan ulang — buka Recovery window aktif
+    if (state.levelStatus[1] !== 'locked') {
+      termPrint('C:\\SMAN6_LIBRARY&gt; ' + esc(cmd));
+      termPrint('> RECOVERY SESSION ALREADY ACTIVE', 'warn');
+      termPrint('> OPENING RECOVERY WINDOW', 'cy');
+      Sfx.wrong();
+      state.termEnabled = false;
+      setTermEnabled(false);
+      winOpeners['game-window']();
+      return;
+    }
+    state.termEnabled = false;
+    setTermEnabled(false);
+    runScanning();
+  }
+
+  async function openTerminalIntro() {
+    openWindow('terminal-window', { width: 640 });
+    resetTerminal();
+    await typeLine('Microsoft Windows [Version 6.2]', 'dim');
+    await typeLine('(c) SMAN 6 Tambun Selatan. All rights reserved.', 'dim');
+    await typeLine('', '');
+    setTermEnabled(true, 'Ketik <b>recovery</b> lalu tekan <kbd>ENTER</kbd>');
+  }
+
+  // Mirror the hidden input into the fake terminal line (mobile keyboards)
+  function bindTermCatcher() {
+    const catcher = $('#term-input-catcher');
+    if (!catcher) return;
+    catcher.addEventListener('input', () => {
+      if (state.termEnabled) termInput.textContent = catcher.value;
+    });
+    $('.terminal-body', terminalWindow).addEventListener('click', () => {
+      if (state.termEnabled) focusTerm();
+    });
+    catcher.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const cmd = (catcher.value || '').trim().toLowerCase();
+        catcher.value = '';
+        termInput.textContent = '';
+        if (!cmd) return;
+        if (cmd === 'recovery') {
+          handleRecoveryCmd(cmd);
+        } else {
+          termPrint('C:\\SMAN6_LIBRARY&gt; ' + esc(cmd));
+          termPrint('Unknown command.', 'err');
+          termPrint('Try again.', 'err');
+          Sfx.wrong();
+        }
+      }
+    });
+  }
+  bindTermCatcher();
+
+  async function runScanning() {
+    if (state.scanning) return;
+    state.scanning = true;
+    closeWindow('error-window');
+    await typeLine('Starting Recovery System...', 'cy');
+    await typeLine('Scanning Data', '');
+    const prog = document.createElement('div');
+    prog.className = 't-line term-progress';
+    termOut.appendChild(prog);
+    for (let p = 0; p <= 100; p += 5) {
+      const filled = Math.round(p / 5);
+      prog.textContent = '[' + '█'.repeat(filled).padEnd(20, '░') + '] ' + p + '%';
+      termOut.scrollTop = termOut.scrollHeight;
+      Sfx.scanTick();
+      await wait(110);
+    }
+    await wait(300);
+    await typeLine('Scanning Complete.', 'ok');
+    await typeLine('ERROR 404: ALGORITHM NOT FOUND', 'err');
+    await typeLine('System Need Help To Fix It.', 'warn');
+    await wait(400);
+    await typeLine('4 CORE PROCESSES REQUIRED', 'cy');
+    await typeLine('[1] DECOMPOSITION', 'dim');
+    await typeLine('[2] PATTERN RECOGNITION', 'dim');
+    await typeLine('[3] ABSTRACTION', 'dim');
+    await typeLine('[4] ALGORITHM', 'dim');
+    await typeLine('> Recovery process initialized.', 'ok');
+    await wait(500);
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-primary';
+    btn.textContent = '[ START ]';
+    btn.onclick = () => {
+      Sfx.click();
+      btn.remove();
+      // jangan turunkan progres: jika game sudah mulai, buka Recovery window aktif
+      if (state.levelStatus[1] === 'locked') startLevel(1);
+      else winOpeners['game-window']();
+    };
+    $('.terminal-body', terminalWindow).appendChild(btn);
+    state.scanning = false;
+  }
+
+  // ============================================================
+  // FINAL TERMINAL
+  // ============================================================
+  async function finalTerminal() {
+    openWindow('terminal-window', { width: 640 });
+    resetTerminal();
+    await typeLine('C:\\SMAN6_LIBRARY> final_test', 'ok');
+    await wait(300);
+    await typeLine('FINAL ALGORITHM TEST', 'cy');
+    await typeLine('1. Simpan transaksi', 'dim');
+    await typeLine('2. Pilih buku', 'dim');
+    await typeLine('3. Cek ketersediaan', 'dim');
+    await typeLine('4. Input siswa', 'dim');
+    await wait(300);
+    playGlitch(1);
+    await typeLine('> INVALID ALGORITHM', 'err');
+    await typeLine('> STEP ORDER ERROR', 'err');
+    await typeLine('The recovery system cannot continue.', 'warn');
+    await typeLine('Rearrange the algorithm.', 'cy');
+    await wait(400);
+    state.levelStatus[5] = 'active';
+    renderLevelChips();
+    openWindow('game-window', { width: 640, title: 'FINAL ALGORITHM TEST', badge: 'FINAL' });
+    renderQuestion(QUESTIONS.find(x => x.id === 17));
+  }
+
+  // ============================================================
+  // RECOVERY
+  // ============================================================
+  async function runRecovery() {
+    if (state.countdownTimer) { clearInterval(state.countdownTimer); state.countdownTimer = null; }
+    closeWindow('terminal-window');
+    openWindow('recovery-window', { width: 640 });
+    const body = $('#recovery-body');
+    body.innerHTML = '';
+    const line = async (html, cls) => {
+      const div = document.createElement('div');
+      div.className = 't-line ' + (cls || '');
+      div.innerHTML = html;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+      await wait(240);
+    };
+    const prog = document.createElement('div');
+    prog.className = 't-line term-progress';
+    body.appendChild(prog);
+    Sfx.restore();
+    await line('C:\\SMAN6_LIBRARY> verify', 'ok');
+    await line('Verifying recovery data...', 'cy');
+    await line('DECOMPOSITION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[COMPLETE]', 'ok');
+    await line('PATTERN RECOGNITION&nbsp;[COMPLETE]', 'ok');
+    await line('ABSTRACTION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[COMPLETE]', 'ok');
+    await line('ALGORITHM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[COMPLETE]', 'ok');
+    await line('Recovery codes verified.', 'cy');
+    await wait(300);
+    await line('Starting system restoration...', 'cy');
+    const steps = [20, 40, 60, 80, 100];
+    for (const p of steps) {
+      prog.textContent = '[' + '█'.repeat(p / 5).padEnd(20, '░') + '] ' + p + '%';
+      body.scrollTop = body.scrollHeight;
+      Sfx.scanTick();
+      await wait(320);
+    }
+    await wait(350);
+    await line('&gt; Restoring Book Database...&nbsp;&nbsp;&nbsp;&nbsp;[OK]', 'ok');
+    await line('&gt; Restoring Student Database...&nbsp;&nbsp;[OK]', 'ok');
+    await line('&gt; Restoring Borrow System...&nbsp;&nbsp;&nbsp;&nbsp;[OK]', 'ok');
+    await line('&gt; Restoring Return System...&nbsp;&nbsp;&nbsp;&nbsp;[OK]', 'ok');
+    await wait(500);
+    await line('========================================', 'cy');
+    await line('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LIBRARY SYSTEM RESTORED', 'cy');
+    await line('========================================', 'cy');
+    await line('SMAN 6 TAMBUN SELATAN', '');
+    await line('LIBRARY MANAGEMENT SYSTEM', '');
+    await line('STATUS: ONLINE ✓', 'ok');
+    await line('All systems operational.', '');
+    await line('C:\\SMAN6_LIBRARY&gt; _', 'ok');
+    await wait(900);
+    finalCinematic();
+  }
+
+  // ============================================================
+  // FINAL CINEMATIC
+  // ============================================================
+  async function finalCinematic() {
+    state.finished = true;
+    setBezel('ONLINE', true);
+    closeWindow('recovery-window');
+    playGlitch(1);
+    await wait(900);
+    computerScene.classList.add('hidden-scene');
+    deskScene.classList.remove('hidden-scene');
+    deskScene.classList.remove('zooming');
+    Sfx.fanfare();
+    Fx.confetti(7);
+    timers.push(setTimeout(() => Fx.fireworkShow(8), 900));
+    const fc = $('#final-cine');
+    fc.classList.remove('hidden');
+    $('#fc-score').textContent = state.solved + ' / ' + TOTAL + ' CHALLENGES COMPLETED';
+  }
+
+  // ============================================================
+  // INPUT
+  // ============================================================
+  monitor.addEventListener('click', startGame);
+  monitor.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startGame(); }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!isShown('terminal-window')) return;
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!state.termEnabled) return;
+      const cmd = termInput.textContent.trim().toLowerCase();
+      termInput.textContent = '';
+      if (!cmd) return;
+      if (cmd === 'recovery') {
+        handleRecoveryCmd(cmd);
+      } else {
+        termPrint('C:\\SMAN6_LIBRARY&gt; ' + esc(cmd));
+        termPrint('Unknown command.', 'err');
+        termPrint('Try again.', 'err');
+        Sfx.wrong();
+      }
+      return;
+    }
+    if (!state.termEnabled) return;
+    if (e.key === 'Backspace') {
+      e.preventDefault();
+      termInput.textContent = termInput.textContent.slice(0, -1);
+      Sfx.key();
+    } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      termInput.textContent += e.key;
+      Sfx.key();
+    }
+  });
+
+  $('#btn-open-terminal').onclick = () => { Sfx.click(); closeWindow('error-window'); openTerminalIntro(); };
+  $('#btn-play-again').onclick = () => location.reload();
+  // KELUAR = kembali ke desktop komputer (meja tak bisa dipakai lagi karena state.started)
+  $('#btn-exit-desk').onclick = () => {
+    Sfx.click();
+    $('#final-cine').classList.add('hidden');
+    deskScene.classList.add('hidden-scene');
+    computerScene.classList.remove('hidden-scene');
+  };
+
+  // window controls: minimize / maximize(restore) / close — plus click-to-focus & dblclick title
+  $$('.os-window').forEach(w => {
+    w.addEventListener('mousedown', () => { if (focusedId !== w.id) focusWindow(w.id); });
+    const minBtn = $('.os-window-btn[aria-label="Minimize"]', w);
+    const maxBtn = $('.os-window-btn[aria-label="Maximize"]', w);
+    const xBtn = $('.os-window-x', w);
+    if (minBtn) minBtn.addEventListener('click', e => { e.stopPropagation(); minimizeWindow(w.id); });
+    if (maxBtn) maxBtn.addEventListener('click', e => { e.stopPropagation(); toggleMaximize(w.id); });
+    if (xBtn) xBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      closeWindow(w.id);
+      // keep the story moving: closing the error window after the game started jumps to Recovery
+      if (w.id === 'error-window' && state.levelStatus[1] !== 'locked') winOpeners['game-window']();
+    });
+    const bar = $('.os-window-bar', w);
+    if (bar) bar.addEventListener('dblclick', e => {
+      if (e.target.closest('.os-window-btn') || e.target.closest('.os-window-x')) return;
+      toggleMaximize(w.id);
+    });
+  });
+
+  // ============================================================
+  // DATABASE APP
+  // ============================================================
+  function renderDatabaseApp() {
+    const body = $('#database-body');
+    body.innerHTML =
+      '<div class="q-kicker">SELECT title, status FROM books WHERE status = \'Tersedia\';</div>' +
+      SQL.renderTable('books', ['id', 'title', 'status'], { rowFilter: r => r.status === 'Tersedia' }) +
+      '<div class="q-kicker">SELECT * FROM books;</div>' +
+      SQL.renderTable('books', ['id', 'title', 'author', 'genre', 'pages', 'cover_color', 'status']) +
+      '<div class="q-kicker">SELECT * FROM transactions;</div>' +
+      SQL.renderTable('transactions', ['student_id', 'book', 'borrow_date', 'return_date', 'status', 'color']);
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  function init() {
+    startClocks();
+    renderLevelChips();
+    updateProgress();
+    monitor.focus();
+  }
+  init();
+})();
+
+</script>
+</body>
+</html>

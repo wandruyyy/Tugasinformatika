@@ -1,0 +1,8 @@
+node_modules
+test
+.git
+.vly-run
+.env
+.env.local
+*.log
+README.md

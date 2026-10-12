@@ -1,0 +1,11 @@
+{
+  "name": "library-recovery-sman6-tambun-selatan",
+  "version": "1.0.0",
+  "description": "LIBRARY RECOVERY: SMAN 6 TAMBUN SELATAN — Educational game for Informatika kelas 10 (Computational Thinking). Pure HTML5/CSS3/JS, no build step.",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node test/e2e.js"
+  }
+}
