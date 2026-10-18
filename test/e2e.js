@@ -309,7 +309,7 @@ function loadGame() {
   check('final terminal: INVALID ALGORITHM', $('#terminal-output').textContent.includes('INVALID ALGORITHM'));
   await waitUntil(() => $$('#q-slots .dd-slot').length === 4, 5000);
   check('soal 17: 4 slot di game window', $$('#q-slots .dd-slot').length === 4);
-  await finishDrag(['PILIH BUKU', 'CEK KETERSEDIAAN', 'INPUT SISWA', 'SIMPAN TRANSAKSI']);
+  await finishDrag(['CEK DATABASE', 'TEMUKAN ERROR 404', 'PULIHKAN QUERY', 'AKTIFKAN RECOVERY']);
   check('soal 17 benar', $('#q-feedback').textContent.includes('CORRECT'));
 
   console.log('\n== 11. RECOVERY + ENDING ==');
@@ -331,7 +331,7 @@ function loadGame() {
   check('icon Library membuka window game kembali', $('#game-window').classList.contains('show'));
   // replay soal 17 → skor TIDAK melebihi 17/17
   await waitUntil(() => $$('#q-pool .dd-chip').length === 4, 3000);
-  const replayOrder = ['PILIH BUKU', 'CEK KETERSEDIAAN', 'INPUT SISWA', 'SIMPAN TRANSAKSI'];
+  const replayOrder = ['CEK DATABASE', 'TEMUKAN ERROR 404', 'PULIHKAN QUERY', 'AKTIFKAN RECOVERY'];
   for (let i = 0; i < 4; i++) {
     const chip = $$('#q-pool .dd-chip').find(c => c.dataset.value === replayOrder[i]);
     click(chip); click($$('#q-slots .dd-slot')[i]); await sleep(15);

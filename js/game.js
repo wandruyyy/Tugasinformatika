@@ -928,10 +928,10 @@
     await typeLine('C:\\SMAN6_LIBRARY> final_test', 'ok');
     await wait(300);
     await typeLine('FINAL ALGORITHM TEST', 'cy');
-    await typeLine('1. Simpan transaksi', 'dim');
-    await typeLine('2. Pilih buku', 'dim');
-    await typeLine('3. Cek ketersediaan', 'dim');
-    await typeLine('4. Input siswa', 'dim');
+    await typeLine('1. Aktifkan recovery', 'dim');
+    await typeLine('2. Temukan error 404', 'dim');
+    await typeLine('3. Pulihkan query', 'dim');
+    await typeLine('4. Cek database', 'dim');
     await wait(300);
     playGlitch(1);
     await typeLine('> INVALID ALGORITHM', 'err');

@@ -236,10 +236,10 @@ const QUESTIONS = [
   {
     id: 17, level: 5, type: 'drag',
     kicker: 'FINAL ALGORITHM TEST',
-    text: 'The recovery system cannot continue.\nRearrange the algorithm.',
-    wrongShown: ['Simpan transaksi', 'Pilih buku', 'Cek ketersediaan', 'Input siswa'],
-    pool: ['SIMPAN TRANSAKSI', 'PILIH BUKU', 'CEK KETERSEDIAAN', 'INPUT SISWA'],
-    order: ['PILIH BUKU', 'CEK KETERSEDIAAN', 'INPUT SISWA', 'SIMPAN TRANSAKSI'],
+    text: 'The recovery sequence is corrupted.\nRearrange the algorithm.',
+    wrongShown: ['Aktifkan recovery', 'Temukan error 404', 'Pulihkan query', 'Cek database'],
+    pool: ['CEK DATABASE', 'TEMUKAN ERROR 404', 'PULIHKAN QUERY', 'AKTIFKAN RECOVERY'],
+    order: ['CEK DATABASE', 'TEMUKAN ERROR 404', 'PULIHKAN QUERY', 'AKTIFKAN RECOVERY'],
     feedback: ['> ALGORITHM VALID.', '> FINAL RECOVERY SEQUENCE ACCEPTED.'],
   },
 ];
