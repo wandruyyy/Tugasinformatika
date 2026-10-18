@@ -140,6 +140,12 @@ const QUESTIONS = [
       { key: 'Status', value: 'NOT RETURNED' },
     ] },
     answer: ['Student ID', 'Book', 'Status'],
+    // FLEXIBLE GRADING: wajib di semua jawaban yang diterima; optional = data
+    // tambahan yang masih logis (mis. Nama untuk identifikasi siswa). Kombinasi
+    // tanpa field wajib, atau dengan data tak-relevan (Class/Hobby/Height),
+    // tetap INCORRECT — jadi variasi valid tidak lagi membingungkan siswa.
+    required: ['Student ID', 'Book', 'Status'],
+    optional: ['Name'],
     feedback: ['> IRRELEVANT DATA REMOVED.'],
   },
   {
@@ -186,6 +192,9 @@ const QUESTIONS = [
       { key: 'Hobby', value: 'Watching movies' },
     ] },
     answer: ['Student ID', 'Name', 'Book', 'Status'],
+    // Minimal inti: Siswa ↔ Buku ↔ Kondisi pinjaman; Nama opsional.
+    required: ['Student ID', 'Book', 'Status'],
+    optional: ['Name'],
     feedback: ['> DATA FILTERED.', '> RELEVANT INFORMATION FOUND.', 'ABSTRACTION COMPLETE.', 'RECOVERY DATA: A-03'],
   },
 

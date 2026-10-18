@@ -223,9 +223,17 @@ function loadGame() {
   await sleep(30);
   check('soal 8 salah → INCORRECT', $('#q-feedback').textContent.includes('INCORRECT'));
   click($('#q-reset'));
-  ['Student ID', 'Book', 'Status'].forEach(k => { const f = $$('.db-field').find(x => x.dataset.key === k); if (f) click(f); });
+  // kombinasi logis tapi TANPA Book (Class+ID+Status) → tetap INCORRECT
+  ['Class', 'Student ID', 'Status'].forEach(k => { const f = $$('.db-field').find(x => x.dataset.key === k); if (f) click(f); });
   click($('#q-check'));
-  check('soal 8 benar', $('#q-feedback').textContent.includes('CORRECT'));
+  await sleep(30);
+  check('soal 8: kombinasi tanpa Book tetap INCORRECT', $('#q-feedback').textContent.includes('INCORRECT'));
+  await sleep(700);
+  click($('#q-reset'));
+  // varian valid: required + Name (opsional) → CORRECT (flexible grading)
+  ['Student ID', 'Book', 'Status', 'Name'].forEach(k => { const f = $$('.db-field').find(x => x.dataset.key === k); if (f) click(f); });
+  click($('#q-check'));
+  check('soal 8 varian (required+Name) benar', $('#q-feedback').textContent.includes('CORRECT'));
   await waitUntil(() => $$('.mc-opt').length === 4 && $('#game-body').textContent.includes('Tere Liye'), 4000);
   // q9: A index 0
   click($$('.mc-opt')[0]);
@@ -243,7 +251,8 @@ function loadGame() {
   click($$('.mc-opt')[0]);
   await waitUntil(() => $$('.db-field').length === 10, 4000);
   check('soal 12: 10 field', $$('.db-field').length === 10);
-  ['Student ID', 'Name', 'Book', 'Status'].forEach(k => { const f = $$('.db-field').find(x => x.dataset.key === k); if (f) click(f); });
+  // varian minimal: hanya required (tanpa Name) → CORRECT (opsional tidak wajib)
+  ['Student ID', 'Book', 'Status'].forEach(k => { const f = $$('.db-field').find(x => x.dataset.key === k); if (f) click(f); });
   click($('#q-check'));
   check('soal 12 benar → A-03', $('#q-feedback').textContent.includes('A-03'));
   await waitUntil(() => $('#lt-name').textContent === 'ALGORITHM', 5000);

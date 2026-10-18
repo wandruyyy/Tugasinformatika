@@ -606,7 +606,12 @@
       $('#q-check').onclick = () => {
         if (checkGuard()) return;
         const chosen = $$('.db-field.sel').map(f => f.dataset.key);
-        const ok = chosen.length === q.answer.length && q.answer.every(a => chosen.indexOf(a) >= 0);
+        // FLEXIBLE GRADING: cocok dengan required (wajib) dan melarang data di luar
+        // required ∪ optional — kombinasi logis yang setara tidak lagi ditolak.
+        const required = q.required || q.answer;
+        const optional = q.optional || [];
+        const ok = required.every(a => chosen.indexOf(a) >= 0)
+          && chosen.every(c => required.indexOf(c) >= 0 || optional.indexOf(c) >= 0);
         if (ok) {
           $$('.db-field').forEach(f => {
             f.classList.remove('sel');
