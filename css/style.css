@@ -870,6 +870,8 @@ body {
 .fc-pill:nth-child(3) { animation-delay: .95s; } .fc-pill:nth-child(4) { animation-delay: 1.1s; }
 @keyframes popIn { from { opacity: 0; transform: translateY(14px) scale(.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
 .fc-score { margin-top: 18px; font-family: var(--mono); font-size: clamp(13px, 2.6vw, 17px); font-weight: 700; letter-spacing: 3px; color: #f6e7c6; animation: popIn .6s ease 1.25s both; }
+.fc-credit { margin-top: 22px; padding-top: 14px; border-top: 1px solid rgba(246,231,198,.25); font-family: var(--mono); font-size: clamp(10px, 2vw, 13px); font-weight: 600; letter-spacing: 2.5px; color: rgba(246,231,198,.75); animation: popIn .6s ease 1.6s both; }
+.fc-credit b { color: #f6e7c6; letter-spacing: 3px; }
 .fc-actions { margin-top: 22px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; animation: popIn .6s ease 1.5s both; }
 
 /* ---- glitch overlay (warm) ---- */

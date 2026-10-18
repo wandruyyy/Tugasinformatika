@@ -318,6 +318,7 @@ function loadGame() {
   await waitUntil(() => !$('#final-cine').classList.contains('hidden'), 6000);
   check('FINAL CINEMATIC tampil (tidak ter-hide oleh scene)', !$('#final-cine').classList.contains('hidden'));
   check('skor 17/17', $('#fc-score').textContent.includes('17 / 17'));
+  check('kredit DIBUAT OLEH KELOMPOK 8 tampil', $('#final-cine .fc-credit') !== null && $('#final-cine .fc-credit').textContent.includes('KELOMPOK 8'));
   check('bezel ONLINE', $('#bezel-status').textContent === 'ONLINE');
 
   console.log('\n== 12. PROGRESS ==');
