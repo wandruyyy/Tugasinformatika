@@ -1030,6 +1030,8 @@
       if (!state.termEnabled) return;
       const cmd = termInput.textContent.trim().toLowerCase();
       termInput.textContent = '';
+      const catcher = $('#term-input-catcher'); // sinkron buffer native agar tidak muncul teks lama
+      if (catcher) catcher.value = '';
       if (!cmd) return;
       if (cmd === 'recovery') {
         handleRecoveryCmd(cmd);
@@ -1044,6 +1046,8 @@
     if (!state.termEnabled) return;
     if (e.key === 'Backspace') {
       e.preventDefault();
+      const catcher = $('#term-input-catcher'); // HAPUS juga di buffer native: kalau tidak, saat ngetik lagi
+      if (catcher && catcher.value) catcher.value = catcher.value.slice(0, -1); // event `input` mengembalikan teks lama
       termInput.textContent = termInput.textContent.slice(0, -1);
       Sfx.key();
     } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {

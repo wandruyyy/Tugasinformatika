@@ -1,7 +1,11 @@
 /* ============================================================
    BUILD: satukan semua CSS & JS ke satu file index.html
-   Menghasilkan index-single.html (self-contained, hanya butuh
-   Google Fonts dari CDN — semuanya lainnya inline).
+   Menulis index-single.html (self-contained; asset eksternal
+   hanya Google Fonts).
+   Mode didukung:
+   - index.html klasik (<link> + <script src="...">) → diganti inline
+   - index.html sudah self-contained → isi <style>/<script> inline
+     di-REFRESH dari file sumber (idempotent, bisa dipanggil ulang)
    Jalankan: node scripts/build-single.js
    ============================================================ */
 const fs = require('fs');
@@ -10,45 +14,80 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 
+const CSS_FILE = 'css/style.css';
+const SCRIPTS = ['js/db.js', 'js/sfx.js', 'js/fx.js', 'js/questions.js', 'js/game.js'];
+const die = msg => { console.error('BUILD FAIL: ' + msg); process.exit(1); };
+
 let html = read('index.html');
-const css = read('css/style.css').trim();
+const css = read(CSS_FILE).trim();
 
-/* 1) Inline CSS — pakai replacement FUNCTION supaya karakter '$'
-      di dalam konten tidak diinterpretasi sebagai pattern khusus. */
-const linkRe = /^[^\S\n]*<link rel="stylesheet" href="css\/style\.css">[^\S\n]*$/m;
-if (!linkRe.test(html)) { console.error('LINK TAG css/style.css TIDAK DITEMUKAN'); process.exit(1); }
-html = html.replace(linkRe, () => '<style>\n' + css + '\n</style>');
+// Cek dulu: file JS tidak boleh mengandung </script> (membuat inline tidak aman)
+for (const f of SCRIPTS) {
+  if (/<\/script/i.test(read(f))) die(f + ' berisi </script>');
+}
 
-/* 2) Inline JS satu per satu (urutan sama dengan tag asli).
-      Catatan penting: WAJIB replacement function — kalau string
-      dipakai langsung, '$$' di game.js akan dianggap '$' literal
-      dan semua shorthand $$() rusak. */
-const scripts = ['js/db.js', 'js/sfx.js', 'js/fx.js', 'js/questions.js', 'js/game.js'];
-for (const f of scripts) {
-  const tagRe = new RegExp('<script src="' + f.replace(/\//g, '\\/') + '"></script>');
-  if (!tagRe.test(html)) { console.error('SCRIPT TAG TIDAK DITEMUKAN: ' + f); process.exit(1); }
-  const code = read(f);
-  if (/<\/script/i.test(code)) { console.error(f, 'berisi </script> — bikin inline tidak aman'); process.exit(1); }
-  html = html.replace(tagRe, () => '<script>\n' + code + '\n</script>');
+const classic = /<link rel="stylesheet" href="css\/style\.css">/.test(html) && /<script src=/.test(html);
+
+if (classic) {
+  /* ---------- MODE A: markup klasik ---------- */
+  // Replacement WAJIB pakai fungsi: '$$' sebagai string replacement
+  // berarti literal '$', dan akan merusak shorthand $$() di game.js.
+  html = html.replace(/^[^\S\n]*<link rel="stylesheet" href="css\/style\.css">[^\S\n]*$/m,
+    () => '<style>\n' + css + '\n</style>');
+  for (const f of SCRIPTS) {
+    const tagRe = new RegExp('<script(\\s[^>]*)? src="' + f.replace(/\//g, '\\/') + '"></script>');
+    if (!tagRe.test(html)) die('SCRIPT TAG TIDAK DITEMUKAN: ' + f);
+    const code = read(f);
+    html = html.replace(tagRe, () => '<script>\n' + code + '\n</script>');
+  }
+} else {
+  /* ---------- MODE B: sudah self-contained → refresh isi inline ---------- */
+  let styleCount = 0;
+  html = html.replace(/<style>\n[\s\S]*?\n<\/style>/, () => {
+    styleCount++;
+    return '<style>\n' + css + '\n</style>';
+  });
+  if (styleCount !== 1) die('blok <style> inline tidak ditemukan / lebih dari satu (n=' + styleCount + ')');
+
+  let i = 0;
+  const codegen = () => {
+    const f = SCRIPTS[i++];
+    return '<script>\n' + read(f) + '\n</script>';
+  };
+  html = html.replace(/<script>\n[\s\S]*?<\/script>/g, codegen);
+  if (i !== SCRIPTS.length) die('jumlah blok <script> inline tidak sesuai (ditemukan ' + i + ', butuh ' + SCRIPTS.length + ')');
 }
 
 const out = path.join(ROOT, 'index-single.html');
 fs.writeFileSync(out, html);
 
-/* 3) Verifikasi pasca-build */
-const checks = [];
+/* ============================ VERIFIKASI ============================ */
 const count = (s, p) => (s.match(p) || []).length;
-const a = count(read('js/game.js'), /\$\$/g);
-const b = count(html, /\$\$/g);
-checks.push(['$$ game.js = $$ di single-file', a > 0 && a === b, a + ' vs ' + b]);
-checks.push(['tidak ada lagi <script src=', (html.match(/<script src=/g) || []).length === 0]);
-checks.push(['tidak ada lagi <link ... style.css', !/href="css\/style\.css"/.test(html)]);
-checks.push(['ada 1 <style> inline', count(html, /<style>/g) === 1]);
-checks.push(['ada 5 <script> inline', count(html, /<script>\n/g) === 5]);
+const srcGame = read('js/game.js');
+const srcDb = read('js/db.js');
+
+function countBytesOf(f) { return Buffer.byteLength(read(f)); }
+
+const inlineStyle = html.match(/<style>\n([\s\S]*?)\n<\/style>/);
+const inlineScripts = html.match(/<script>\n([\s\S]*?)\n<\/script>/g) || [];
+
+const checks = [
+  ['ukuran <style> inline == css/style.css', inlineStyle && inlineStyle[1].trim() === css],
+  ['jumlah blok <script> inline == 5', inlineScripts.length === SCRIPTS.length],
+  ['isi script inline == isi file sumber (berurutan)',
+    SCRIPTS.every((f, idx) => inlineScripts[idx] === '<script>\n' + read(f) + '\n</script>')],
+  ['shorthand $$ game.js utuh di file hasil (hitung di blok inline game.js)',
+    inlineScripts.length === 5 &&
+    (inlineScripts[4].match(/\$\$/g) || []).length === count(srcGame, /\$\$/g) &&
+    count(srcGame, /\$\$/g) > 0],
+  ['tidak ada lagi <script src=', count(html, /<script src=/g) === 0],
+  ['tidak ada lagi <link ... css/style.css', !/href="css\/style\.css"/.test(html)],
+  ['ukuran total masuk akal', Buffer.byteLength(html) > 100000],
+];
 
 let failed = 0;
-for (const [name, ok, extra] of checks) {
-  console.log((ok ? '  OK   ' : ' FAIL  ') + name + (ok ? '' : ' — ' + extra));
+for (const [name, ok] of checks) {
+  console.log((ok ? '  OK   ' : ' FAIL  ') + name);
   if (!ok) failed++;
 }
 console.log('written', path.relative(ROOT, out), Buffer.byteLength(html), 'bytes');
